@@ -1,5 +1,42 @@
 {
   "dependencies": {
+    "com.antonysze.custom-play-button": {
+      "version": "https://github.com/antonysze/unity-custom-play-button.git",
+      "depth": 0,
+      "source": "git",
+      "dependencies": {},
+      "hash": "b6d122e7809c6529fb5a4b73d41a67ce1edac987"
+    },
+    "com.cysharp.r3": {
+      "version": "https://github.com/Cysharp/R3.git?path=src/R3.Unity/Assets/R3.Unity",
+      "depth": 0,
+      "source": "git",
+      "dependencies": {
+        "com.unity.modules.imgui": "1.0.0"
+      },
+      "hash": "2eaf201aabbbcb8d84c447cdd29201e457a4472a"
+    },
+    "com.cysharp.unitask": {
+      "version": "https://github.com/Cysharp/UniTask.git?path=src/UniTask/Assets/Plugins/UniTask",
+      "depth": 0,
+      "source": "git",
+      "dependencies": {},
+      "hash": "f7b3c2fbe1628518a12340576e779fd80837480e"
+    },
+    "com.github-glitchenzo.nugetforunity": {
+      "version": "https://github.com/GlitchEnzo/NuGetForUnity.git?path=/src/NuGetForUnity",
+      "depth": 0,
+      "source": "git",
+      "dependencies": {},
+      "hash": "a011c51ed65c9abc3151a7a408bc70d408352933"
+    },
+    "com.marijnzwemmer.unity-toolbar-extender": {
+      "version": "https://github.com/marijnz/unity-toolbar-extender.git",
+      "depth": 0,
+      "source": "git",
+      "dependencies": {},
+      "hash": "dbd76ed996483d219c39d240f785b1790aa039ed"
+    },
     "com.unity.ai.navigation": {
       "version": "2.0.4",
       "depth": 0,
