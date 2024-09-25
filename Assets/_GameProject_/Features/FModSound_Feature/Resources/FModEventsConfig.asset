@@ -1,0 +1,18 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5da97c46ae6f0884d869f5bdac2c8668, type: 3}
+  m_Name: FModEventsConfig
+  m_EditorClassIdentifier: 
+  _fModSoundConfigs:
+  - {fileID: 11400000, guid: 0da0035152987354da111d6142a7c7cc, type: 2}
+  - {fileID: 11400000, guid: 92282ebd6b5549942a588291c05d08d5, type: 2}
+  - {fileID: 11400000, guid: b6eb069ea0d481143bb2243e5994d4c6, type: 2}

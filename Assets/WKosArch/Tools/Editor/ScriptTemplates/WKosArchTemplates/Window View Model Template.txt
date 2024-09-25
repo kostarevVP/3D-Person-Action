@@ -1,0 +1,13 @@
+using WKosArch.UIService.Views.Windows;
+
+ #ROOTNAMESPACEBEGIN#
+public class #SCRIPTNAME# : WindowViewModel
+{
+
+}
+
+public class Window#SCRIPTNAME# : Window<#SCRIPTNAME#>
+{
+    
+}
+#ROOTNAMESPACEEND#

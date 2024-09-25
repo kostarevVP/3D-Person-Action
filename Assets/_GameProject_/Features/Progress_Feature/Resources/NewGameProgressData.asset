@@ -1,0 +1,18 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 73563dfc4dc8cc04dbc12214ecb33b99, type: 3}
+  m_Name: NewGameProgressData
+  m_EditorClassIdentifier: 
+  SoundProgressConfig: {fileID: 11400000, guid: cb861b74ddb5f714d98fab7562d68009, type: 2}
+  NewGameSceneName: MainMenu_Scene
+  NewGameSceneIndex: 1
+  _firstSceneToLoad: {fileID: 102900000, guid: 08ac429de7017c144afdfcb429924075, type: 3}

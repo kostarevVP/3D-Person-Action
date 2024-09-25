@@ -1,0 +1,13 @@
+using WKosArch.UIService.Views.Widgets;
+
+ #ROOTNAMESPACEBEGIN#
+public class #SCRIPTNAME# : WidgetViewModel
+{
+
+}
+
+public class Widget#SCRIPTNAME# : Widget<#SCRIPTNAME#>
+{
+    
+}
+#ROOTNAMESPACEEND#

@@ -1,0 +1,31 @@
+using WKosArch.DependencyInjection;
+using WKosArch.Domain.Contexts;
+using WKosArch.Domain.Features;
+using WKosArch.Extentions;
+using UnityEngine;
+    
+
+ #ROOTNAMESPACEBEGIN#
+    [CreateAssetMenu(fileName = " #SCRIPTNAME#", menuName = "Game/Installers/#SCRIPTNAME#")]
+    public class  #SCRIPTNAME# : FeatureInstaller
+    {
+
+        public override IFeature Create(IDiContainer container)
+        {
+            var feature = new Feature();
+        
+            RegisterFeatureAsSingleton(container, feature);
+
+            return feature;
+        }
+
+        public override void Dispose() { }
+
+        private void RegisterFeatureAsSingleton(IDiContainer container, var feature)
+        {
+            container.RegisterSingleton(_ => feature);
+            Log.PrintColor($"[#SCRIPTNAME#] Create and RegisterSingleton", Color.cyan);
+        }
+    }
+
+#ROOTNAMESPACEEND#

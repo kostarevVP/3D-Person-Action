@@ -1,0 +1,9 @@
+using WKosArch;
+
+ #ROOTNAMESPACEBEGIN#
+public class #SCRIPTNAME# : HudViewModel
+{
+
+}
+
+#ROOTNAMESPACEEND#
