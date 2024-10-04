@@ -1,24 +1,26 @@
-using WKosArch.DependencyInjection;
+using UnityEngine;
 using WKosArch.Domain.Contexts;
 using WKosArch.Domain.Features;
-using WKosArch.Extentions;
-using UnityEngine;
-using WKosArch.Services.Scenes;
-using WKosArch.Services.UIService.UI;
-using WKosArch.Services.UIService;
+using WKosArch.Extensions;
+using WKosArch.UI_Feature;
+using WKosArch.DependencyInjection;
+using WKosArch.SceneManagement_Feature;
 
 
-[CreateAssetMenu(fileName = " LoadMainMenuFeature_Installer", menuName = "Game/Installers/LoadMainMenuFeature_Installer")]
+[CreateAssetMenu(fileName = "LoadMainMenuFeature_Installer", menuName = "Game/Installers/LoadMainMenuFeature_Installer")]
 public class LoadMainMenuFeature_Installer : FeatureInstaller
 {
-
     public override IFeature Create(IDiContainer container)
     {
         ISceneManagementFeature sceneManagementService = container.Resolve<ISceneManagementFeature>();
-        IUserInterface ui = container.Resolve<IUiFeature>().UI;
-        ISaveLoadHandlerService saveLoadHandler = container.Resolve<ISaveLoadHandlerService>();
+        IUserInterfaceFeature ui = container.Resolve<IUserInterfaceFeature>();
+        IStateHandlerFeature saveLoadHandlerService = container.Resolve<IStateHandlerFeature>();
 
-        ILoadMainMenuFeature feature = new LoadMainMenuFeature(sceneManagementService, ui, saveLoadHandler);
+
+        ILoadMainMenuFeature feature = new LoadMainMenuFeature(sceneManagementService, ui);
+
+        saveLoadHandlerService.AddGameStateHolder(feature as ISaveGameState);
+        saveLoadHandlerService.InformSaveHolders();
 
         RegisterFeatureAsSingleton(container, feature);
 

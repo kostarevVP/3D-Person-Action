@@ -1,27 +1,19 @@
-using Unity.Transforms;
-using WKosArch.Extentions;
-using WKosArch.Services.Scenes;
-using WKosArch.Services.UIService.UI;
+using WKosArch.Extensions;
+using WKosArch.SceneManagement_Feature;
+using WKosArch.UI_Feature;
 
 namespace WKosArch.Features.LoadLevelFeature
 {
     public class LoadLevelFeature : ILoadLevelFeature
     {
-        private readonly ISaveLoadHandlerService _saveLoadHandler;
         private readonly ISceneManagementFeature _sceneManagementService;
-        private readonly IUserInterface _ui;
+        private readonly IUserInterfaceFeature _ui;
 
 
-        private LocalTransform _playerSpawnPoint;
-
-        public LoadLevelFeature(ISceneManagementFeature sceneManagementService,
-            IUserInterface ui,
-            ISaveLoadHandlerService saveLoadHandler)
+        public LoadLevelFeature(ISceneManagementFeature sceneManagementService, IUserInterfaceFeature ui)
         {
             _sceneManagementService = sceneManagementService;
             _ui = ui;
-            _saveLoadHandler = saveLoadHandler;
-            _saveLoadHandler.AddSaveLoadHolder(this);
 
             Subscribe();
         }
@@ -40,10 +32,7 @@ namespace WKosArch.Features.LoadLevelFeature
 
         private void SceneLoaded(string sceneName)
         {
-            _saveLoadHandler.InformLoadHolders();
-
-            LoadGameLevelEnviroment();
-
+            LoadGameLevelEnvironment();
         }
 
         private void SceneStarted(string sceneName)
@@ -52,9 +41,9 @@ namespace WKosArch.Features.LoadLevelFeature
 
         }
 
-        public void LoadGameLevelEnviroment()
+        public void LoadGameLevelEnvironment()
         {
-            Log.PrintYellow("Load level environment");
+            Log.PrintYellow("Load level Environment");
 
 
             SpawnPlayer();
@@ -79,23 +68,6 @@ namespace WKosArch.Features.LoadLevelFeature
             //_ui.Show<JoystickHudViewModel>();
             //_ui.Show<PlayerDataHudViewModel>();
             //_ui.Show<EnemyHudViewModel>();
-        }
-
-
-        public void SaveProgress(GameProgressData progress)
-        {
-            //var sceneIndex = _sceneManagementService.CurrentSceneIndex;
-            //progress.SceneProgressData.SceneIndex = sceneIndex;
-            //progress.SceneProgressData.PlayerProgressData.LocalTransform = _factorySystem.GetLocalTransform(_player);
-        }
-
-        public void LoadProgress(GameProgressData progress)
-        {
-            var sceneIndex = _sceneManagementService.CurrentSceneIndex;
-            if (sceneIndex != progress.SceneProgressData.SceneIndex)
-                return;
-
-            _playerSpawnPoint = progress.SceneProgressData.PlayerProgressData.LocalTransformData.ToLocalTranform();
         }
     }
 }

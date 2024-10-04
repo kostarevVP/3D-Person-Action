@@ -17,8 +17,9 @@ namespace WKosArch.MVVM.Binders
         {
             var propertyInfo = viewModel.GetType().GetProperty(PropertyName);
             var reactiveCollection = (IReadOnlyReactiveCollection<T>)propertyInfo.GetValue(viewModel);
-        
+
             var addedSubscription = reactiveCollection.Added.Subscribe(OnItemAdded);
+
             var removedSubscription = reactiveCollection.Removed.Subscribe(OnItemRemoved);
             var compositeDisposable = new CompositeDisposable();
             

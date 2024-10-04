@@ -1,7 +1,10 @@
 ﻿using WKosArch.Domain.Features;
 
-public interface IQualityFeature : IFeature
+namespace WKosArch.Quality_Feature
 {
-    void SetFPSLimit(int targetFPS);
-    void SetRenderPipeline(RenderingQuality renderingQuality);
+	public interface IQualityFeature : IFeature
+	{
+		void SetFPSLimit(int targetFPS);
+		void SetRenderPipeline(RenderingQuality renderingQuality);
+	} 
 }

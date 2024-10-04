@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace WKosArch.Services.UIService.UI
+namespace WKosArch.UI_Feature
 {
     public class ViewModelTreeNode
     {
@@ -19,7 +19,7 @@ namespace WKosArch.Services.UIService.UI
             WidgetViewModels.Add(name);
         }
 
-        public UiViewModel RemoveLastWindget()
+        public UiViewModel RemoveLastWidget()
         {
             UiViewModel name = null;
 

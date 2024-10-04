@@ -2,33 +2,36 @@
 using UnityEngine;
 using WKosArch.Domain.Contexts;
 using WKosArch.Domain.Features;
-using WKosArch.Extentions;
-using WKosArch.Services.StaticDataServices;
+using WKosArch.Extensions;
+using WKosArch.Configs_Feature;
 
-[CreateAssetMenu(fileName = "QualityFeature_Installer", menuName = "Game/Installers/QualityFeature_Installer")]
-
-public class QualityFeature_Installer : FeatureInstaller
+namespace WKosArch.Quality_Feature
 {
-    [SerializeField] private int _targetFPS = 60;
+    [CreateAssetMenu(fileName = "QualityFeature_Installer", menuName = "Game/Installers/QualityFeature_Installer")]
 
-    public override IFeature Create(IDiContainer container)
+    public class QualityFeature_Installer : FeatureInstaller
     {
-        var _staticDataService = container.Resolve<IConfigDataFeature>();
+        [SerializeField] private int _targetFPS = 60;
 
-        IQualityFeature qualityFueature = new QualityFeature(_staticDataService.RenderQualityConfigMap);
+        public override IFeature Create(IDiContainer container)
+        {
+            var _configsFeature = container.Resolve<IConfigsFeature>();
 
-        RegisterFeatureAsSingleton(container, qualityFueature);
+            IQualityFeature qualityFeature = new QualityFeature(_configsFeature.RenderQualityConfigMap);
 
-        qualityFueature.SetFPSLimit(_targetFPS);
+            RegisterFeatureAsSingleton(container, qualityFeature);
 
-        return qualityFueature;
-    }
+            qualityFeature.SetFPSLimit(_targetFPS);
 
-    public override void Dispose() { }
+            return qualityFeature;
+        }
 
-    private void RegisterFeatureAsSingleton(IDiContainer container, IQualityFeature feature)
-    {
-        container.RegisterSingleton(_ => feature);
-        Log.PrintColor($"[IQualityFeature] Create and RegesterSingleton", Color.cyan);
-    }
+        public override void Dispose() { }
+
+        private void RegisterFeatureAsSingleton(IDiContainer container, IQualityFeature feature)
+        {
+            container.RegisterSingleton(_ => feature);
+            Log.PrintColor($"[QualityFeature - IQualityFeature] Create and RegisterSingleton", Color.cyan);
+        }
+    } 
 }

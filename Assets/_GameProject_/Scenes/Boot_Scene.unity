@@ -129,7 +129,7 @@ GameObject:
   - component: {fileID: 165757439}
   - component: {fileID: 165757440}
   m_Layer: 0
-  m_Name: First_Scene_SceneContext
+  m_Name: Prototype_SceneContext
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -165,7 +165,7 @@ MonoBehaviour:
   _featureInstallers:
   - {fileID: 11400000, guid: 33b86da11e5b7cc4d88de88260c69b69, type: 2}
   _scene: {fileID: 102900000, guid: df84d8dfc18d5d6448968d3b9be5cce5, type: 3}
-  SceneName: First_Scene
+  SceneName: Prototype_Scene
 --- !u!1 &742322798
 GameObject:
   m_ObjectHideFlags: 0
@@ -193,7 +193,7 @@ Camera:
   m_GameObject: {fileID: 742322798}
   m_Enabled: 1
   serializedVersion: 2
-  m_ClearFlags: 1
+  m_ClearFlags: 4
   m_BackGroundColor: {r: 0, g: 0, b: 0, a: 1}
   m_projectionMatrixMode: 1
   m_GateFitMode: 2
@@ -265,7 +265,7 @@ MonoBehaviour:
   m_RenderShadows: 1
   m_RequiresDepthTextureOption: 2
   m_RequiresOpaqueTextureOption: 2
-  m_CameraType: 0
+  m_CameraType: 1
   m_Cameras: []
   m_RendererIndex: -1
   m_VolumeLayerMask:
@@ -476,8 +476,8 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 165757439}
   - {fileID: 1226592209}
+  - {fileID: 165757439}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1573946695160993309
@@ -509,14 +509,12 @@ MonoBehaviour:
   - {fileID: 11400000, guid: ed95d4f0e4dae024ea4b5a7bb20d1ed9, type: 2}
   - {fileID: 11400000, guid: a8ca2b350168bb047b52ac4d51996d67, type: 2}
   - {fileID: 11400000, guid: 5ff5a8e89e1806c4dbc49b41a9d05dd6, type: 2}
-  - {fileID: 11400000, guid: 0d3688a0a0f7626498820196a396b816, type: 2}
-  - {fileID: 11400000, guid: 3725633fc2377f04c861def053b4d09f, type: 2}
-  - {fileID: 11400000, guid: 01f9ac501a6ea7648bbf3ed8bee95d18, type: 2}
+  - {fileID: 11400000, guid: 96bb8b13943c9f444878cd65b6396cec, type: 2}
+  - {fileID: 11400000, guid: e4877cfb0adef1e40ac87a0edb53e0eb, type: 2}
+  - {fileID: 11400000, guid: 7d5ae4225af463b48a9b49797a27b526, type: 2}
   - {fileID: 11400000, guid: 11ee3f98653fd574895ebd45d186486f, type: 2}
-  - {fileID: 11400000, guid: 5e7d5883aef09c641b9ae397fa1fe7ef, type: 2}
-  - {fileID: 11400000, guid: b71d89225d30d5e4495e8222d202647a, type: 2}
-  - {fileID: 11400000, guid: 325b9595bac252e449924af21628560e, type: 2}
   - {fileID: 11400000, guid: 7767b5b9adc669c4b8ec7cebfb4a320f, type: 2}
+  - {fileID: 11400000, guid: 325b9595bac252e449924af21628560e, type: 2}
   _sceneContexts:
   - {fileID: 165757440}
   - {fileID: 1226592210}

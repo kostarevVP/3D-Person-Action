@@ -1,14 +1,11 @@
-﻿using System.Collections.Generic;
+﻿using System;
 using System.Linq;
+using System.Collections.Generic;
+using UnityEngine;
 using Cysharp.Threading.Tasks;
 using WKosArch.Common.Utils.Async;
 using WKosArch.Domain.Features;
-using UnityEngine;
-using System;
 using WKosArch.DependencyInjection;
-
-
-
 
 namespace WKosArch.Domain.Contexts
 {
@@ -41,6 +38,7 @@ namespace WKosArch.Domain.Contexts
         [SerializeField] private FeatureInstaller[] _featureInstallers;
 
         private List<IFeature> _cachedFeatures;
+        private List<IFeature> _reverseCachedFeatures;
 
         private IDiContainer _container;
 
@@ -49,6 +47,7 @@ namespace WKosArch.Domain.Contexts
         private void Awake()
         {
             _cachedFeatures = new List<IFeature>();
+            _reverseCachedFeatures = new List<IFeature>();
         }
 
         private void OnDestroy()
@@ -59,18 +58,18 @@ namespace WKosArch.Domain.Contexts
 
         private void OnApplicationFocus(bool hasFocus)
         {
-            foreach (IFeature serviceFeature in _cachedFeatures)
+            foreach (IFeature feature in _reverseCachedFeatures)
             {
-                if (serviceFeature is IFocusPauseFeature focusFeature)
+                if (feature is IFocusPauseFeature focusFeature)
                     focusFeature.OnApplicationFocus(hasFocus);
             }
         }
 
         private void OnApplicationPause(bool pauseStatus)
         {
-            foreach (IFeature serviceFeature in _cachedFeatures)
+            foreach (IFeature feature in _cachedFeatures)
             {
-                if (serviceFeature is IFocusPauseFeature pauseFeature)
+                if (feature is IFocusPauseFeature pauseFeature)
                     pauseFeature.OnApplicationPause(pauseStatus);
             }
         }
@@ -81,19 +80,19 @@ namespace WKosArch.Domain.Contexts
 
         public virtual async UniTask InitializeAsync()
         {
-            InstallServiceFeatures();
-            InitializeServiceFeatures();
+            InstallFeatures();
+            InitializeFeatures();
 
             await WaitInitializationComplete();
         }
 
         public void Destroy()
         {
-            DestroyServiceFeatures();
+            DisposeFeatures();
 
             //there are problems with Destroy and OnDestroy, so it needs to be checked
             //because when game is close this method call twice and if not call from OnDestroy
-            //i have a problem with UIFactory its because static field in Monobehaivour
+            //i have a problem with UIFactory its because static field in MonoBehaviour
             if (_container != null)
                 _container.Dispose();
         }
@@ -102,21 +101,24 @@ namespace WKosArch.Domain.Contexts
 
         protected abstract IDiContainer CreateLocalContainer(IDiContainer dIContainer = null);
 
-        private void InstallServiceFeatures()
+        private void InstallFeatures()
         {
-            foreach (var serviceFeatureInstaller in _featureInstallers)
+            foreach (var featureInstaller in _featureInstallers)
             {
-                var createdFeature = serviceFeatureInstaller.Create(Container);
+                var createdFeature = featureInstaller.Create(Container);
 
                 _cachedFeatures.Add(createdFeature);
             }
+
+            _reverseCachedFeatures = _cachedFeatures;
+            _reverseCachedFeatures.Reverse();
         }
 
-        private void InitializeServiceFeatures()
+        private void InitializeFeatures()
         {
-            foreach (IFeature serviceFeature in _cachedFeatures)
+            foreach (IFeature feature in _cachedFeatures)
             {
-                if (serviceFeature is IAsyncFeature asyncFeature)
+                if (feature is IAsyncFeature asyncFeature)
                     asyncFeature.InitializeAsync();
             }
         }
@@ -138,21 +140,22 @@ namespace WKosArch.Domain.Contexts
             IsReady = true;
         }
 
-        private void DestroyServiceFeatures()
+        private void DisposeFeatures()
         {
-            foreach (IFeature serviceFeature in _cachedFeatures)
+            foreach (IFeature feature in _cachedFeatures)
             {
-                if (serviceFeature is IAsyncFeature asyncFeature)
-                    asyncFeature.DestroyAsync();
-                if (serviceFeature is IDisposable disposable)
+                if (feature is IAsyncFeature asyncFeature)
+                    asyncFeature.DisposeAsync();
+                if (feature is IDisposable disposable)
                     disposable.Dispose();
             }
 
             _cachedFeatures.Clear();
+            _reverseCachedFeatures.Clear();
 
-            foreach (var serviceFeaturesInstaller in _featureInstallers)
+            foreach (var featuresInstaller in _featureInstallers)
             {
-                serviceFeaturesInstaller.Dispose();
+                featuresInstaller.Dispose();
             }
         }
     }

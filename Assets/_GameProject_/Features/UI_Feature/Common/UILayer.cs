@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace WKosArch.Services.UIService.Common
+namespace WKosArch.UI_Feature
 {
     [Serializable]
     public enum UILayer

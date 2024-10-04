@@ -1,4 +1,6 @@
 using R3;
+using WKosArch.FModSound_Feature;
+using WKosArch.GameState_Feature;
 
 namespace WKosArch.Sound_Feature
 {
@@ -21,7 +23,7 @@ namespace WKosArch.Sound_Feature
 
         private ReactiveProperty<bool> _hapticEnabled = new();
 
-        private ISoundSettingsDataProxy _soundDataProxy => DiContainer.Resolve<ISoundFeature>().Settings.ValueProxy;
+        private SoundSettingsStateProxy _soundDataProxy => DiContainer.Resolve<ISoundFeature<FModSound>>().Settings;
 
         private float _previousMusicVolumeValue;
         private float _previousSFXVolumeValue;
@@ -122,7 +124,6 @@ namespace WKosArch.Sound_Feature
             }
 
             _soundDataProxy.SfxOn.OnNext(isEnabled);
-
         }
         public void SwitchUI(bool isEnabled)
         {

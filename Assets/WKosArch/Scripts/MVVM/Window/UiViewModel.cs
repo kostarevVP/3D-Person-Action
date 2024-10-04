@@ -1,8 +1,7 @@
-using WKosArch.MVVM;
-using System.Reactive.Linq;
 using System;
-using WKosArch.Services.UIService.Common;
-using WKosArch.Services.UIService.UI;
+using System.Reactive.Linq;
+using WKosArch.MVVM;
+using WKosArch.UI_Feature;
 using WKosArch.DependencyInjection;
 
 namespace WKosArch
@@ -17,10 +16,10 @@ namespace WKosArch
         public bool IsHide { get; private set; }
 
         public IDiContainer DiContainer => _dIContainer;
-        public IUserInterface UI => _userInterface;
+        public IUserInterfaceFeature UI => _userInterface;
 
         private IDiContainer _dIContainer;
-        private IUserInterface _userInterface;
+        private IUserInterfaceFeature _userInterface;
 
         private event Action<bool> _opened;
         private event Action<bool> _closed;
@@ -34,12 +33,15 @@ namespace WKosArch
             Hided = Observable.FromEvent<bool>(a => _hided += a, a => _hided -= a);
         }
 
-        public void Inject(IDiContainer dIContainer, IUserInterface userInterface)
+        public void Inject(IDiContainer dIContainer, IUserInterfaceFeature userInterface)
         {
             _dIContainer = dIContainer;
             _userInterface = userInterface;
+
+            Injection();
         }
 
+        public virtual void Injection() { }
         public virtual void Subscribe() { }
         public virtual void Unsubscribe() { }
 

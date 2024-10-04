@@ -1,26 +1,31 @@
-﻿using FMOD.Studio;
-using FMod_Feature;
+﻿using R3;
+using FMOD.Studio;
 using FMODUnity;
-using R3;
+using System;
+using System.Collections.Generic;
 using UnityEngine.InputSystem.Haptics;
+using WKosArch.GameState_Feature;
 using WKosArch.Sound_Feature;
 
-namespace FModSound_Feature.Implementation
+namespace WKosArch.FModSound_Feature
 {
-    public class FModSoundFeature : ISoundFeature
+    public class FModSoundFeature : ISoundFeature<FModSound>, ISoundConfigLoader, IDisposable
     {
+        public SoundSettingsStateProxy Settings { get; private set; }
 
-        public ISoundSettings Settings { get; private set; }
-
-        public IUiSounds UiSounds { get; }
-
-        public SfxSounds SfxSounds { get; }
-
-        public IMusicSounds MusicSounds { get; }
+        public ISounds<FModSound> UiSounds => _fModFactory;
+        public ISounds<FModSound> SfxSounds => _fModFactory;
+        public ISounds<FModSound> MusicSounds => _fModFactory;
 
         public IHaptics Haptics { get; }
 
+        public FModListener FModListener => _fModListener;
+        public bool IsMute => _isMute;
+
         private FModListener _fModListener;
+        private FModSoundFactory _fModFactory;
+
+        private CompositeDisposable _compositeDisposable = new();
 
         private bool _isMute;
 
@@ -30,14 +35,17 @@ namespace FModSound_Feature.Implementation
         private Bus _uiBus;
 
 
-        public FModSoundFeature(SoundSettingsData soundProgressData)
-        {
 
-            Settings = new SoundSettings(new SoundSettingsDataProxy(soundProgressData));
+        public FModSoundFeature(SoundSettingsStateProxy soundSettingsStateProxy)
+        {
+            Settings = soundSettingsStateProxy;
+
+            _fModFactory = new FModSoundFactory();
+
+            _fModListener = FModListener.CreateInstance();
 
             InitializeBus();
             Subscribe();
-            _fModListener = FModListener.CreateInstance();
         }
 
         public void MuteAll()
@@ -62,26 +70,34 @@ namespace FModSound_Feature.Implementation
 
         private void Subscribe()
         {
-            Settings.ValueProxy.MasterOn.Subscribe(value => _masterBus.setMute(!value));
-            Settings.ValueProxy.UiOn.Subscribe(value => _uiBus.setMute(!value));
-            Settings.ValueProxy.SfxOn.Subscribe(value => _sfxBus.setMute(!value));
-            Settings.ValueProxy.MusicOn.Subscribe(value => _musicBus.setMute(!value));
+            _compositeDisposable.Add(Settings.MasterOn.Subscribe(value => _masterBus.setMute(!value)));
+            _compositeDisposable.Add(Settings.UiOn.Subscribe(value => _uiBus.setMute(!value)));
+            _compositeDisposable.Add(Settings.SfxOn.Subscribe(value => _sfxBus.setMute(!value)));
+            _compositeDisposable.Add(Settings.MusicOn.Subscribe(value => _musicBus.setMute(!value)));
 
-            Settings.ValueProxy.MasterVolume.Subscribe(value => _masterBus.setVolume(value));
-            Settings.ValueProxy.UiVolume.Subscribe(value => _uiBus.setVolume(value));
-            Settings.ValueProxy.SfxVolume.Subscribe(value => _sfxBus.setVolume(value));
-            Settings.ValueProxy.MusicVolume.Subscribe(value => _musicBus.setVolume(value));
-
+            _compositeDisposable.Add(Settings.MasterVolume.Subscribe(value => _masterBus.setVolume(value)));
+            _compositeDisposable.Add(Settings.UiVolume.Subscribe(value => _uiBus.setVolume(value)));
+            _compositeDisposable.Add(Settings.SfxVolume.Subscribe(value => _sfxBus.setVolume(value)));
+            _compositeDisposable.Add(Settings.MusicVolume.Subscribe(value => _musicBus.setVolume(value)));
         }
-    }
 
-    public class SoundSettings : ISoundSettings
-    {
-        public ISoundSettingsDataProxy ValueProxy { get; private set; }
-
-        public SoundSettings(ISoundSettingsDataProxy soundProgressDataProxy)
+        public void LoadSoundGlobalConfigMap(Dictionary<SoundType, SoundConfig> soundConfigMap)
         {
-            ValueProxy = soundProgressDataProxy;
+            var soundConfigLoader = _fModFactory as ISoundConfigLoader;
+
+            soundConfigLoader.LoadSoundGlobalConfigMap(soundConfigMap);
+        }
+
+        public void LoadSoundSceneConfigMap(Dictionary<SoundType, SoundConfig> soundConfigMap)
+        {
+            var soundConfigLoader = _fModFactory as ISoundConfigLoader;
+
+            soundConfigLoader.LoadSoundSceneConfigMap(soundConfigMap);
+        }
+
+        public void Dispose()
+        {
+            _compositeDisposable.Dispose();
         }
     }
 }

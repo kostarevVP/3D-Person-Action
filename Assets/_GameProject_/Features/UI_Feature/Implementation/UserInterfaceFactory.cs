@@ -1,23 +1,15 @@
-using WKosArch;
 using WKosArch.DependencyInjection;
 using WKosArch.MVVM;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
-using WKosArch.Extentions;
-using WKosArch.Services.UIService;
-using WKosArch.Services.UIService.Common;
-using WKosArch.Services.UIService.UI;
+using WKosArch.Extensions;
 
-namespace Assets._Game_.Services.UI_Service.Implementation
+namespace WKosArch.UI_Feature
 {
     public class UserInterfaceFactory : MonoBehaviour, IUserInterfaceFactory
     {
         private const string PrefabPath = "[INTERFACE]";
-
-        public Dictionary<string, UiViewModel> UiViewModelsCache => _createdUiViewModelsCache;
-        public Dictionary<string, View> ViewCache => _createdViewCache;
-
 
 
         private static UserInterfaceFactory _instance;
@@ -28,11 +20,11 @@ namespace Assets._Game_.Services.UI_Service.Implementation
         private Dictionary<string, View> _createdViewCache = new();
 
         private IDiContainer _diContainer;
-        private IUserInterface _ui;
+        private IUserInterfaceFeature _ui;
 
-        private UISceneConfig _uiSceneConfig;
+        private Dictionary<string, View> _viewModelToViewMap;
 
-        public void Construct(IDiContainer dIContainer, IUserInterface ui)
+        public void Construct(IDiContainer dIContainer, IUserInterfaceFeature ui)
         {
             _diContainer = dIContainer;
             _ui = ui;
@@ -53,25 +45,16 @@ namespace Assets._Game_.Services.UI_Service.Implementation
             return _instance;
         }
 
-        public void Build(UISceneConfig config)
+        public void BuildUiForScene(Dictionary<string, View> viewModelToViewMap)
         {
-            _uiSceneConfig = config;
+            _viewModelToViewMap = viewModelToViewMap;
         }
 
         private View CreateView(UiViewModel uiViewModel, bool forced = false, Transform containerLayer = null)
         {
             View view = null;
-            Dictionary<string, View> viewMapping = new();
 
-            if (uiViewModel is WindowViewModel)
-                viewMapping = _uiSceneConfig.WindowMappings;
-            else if (uiViewModel is HudViewModel)
-                viewMapping = _uiSceneConfig.HudMappings;
-            else if (uiViewModel is WidgetViewModel)
-                viewMapping = _uiSceneConfig.WidgetMappings;
-
-
-            if (viewMapping.TryGetValue(uiViewModel.GetType().FullName, out View prefabView))
+            if (_viewModelToViewMap.TryGetValue(uiViewModel.GetType().FullName, out View prefabView))
             {
                 if (prefabView == null)
                 {
@@ -97,7 +80,7 @@ namespace Assets._Game_.Services.UI_Service.Implementation
             return view;
         }
 
-        public UiViewModel CreateOrGetViewModel<TUiViewModel>() where TUiViewModel : UiViewModel, new()
+        public UiViewModel GetOrCreateViewModel<TUiViewModel>() where TUiViewModel : UiViewModel, new()
         {
             var fullName = typeof(TUiViewModel).FullName;
 
@@ -124,7 +107,7 @@ namespace Assets._Game_.Services.UI_Service.Implementation
             return uiViewModel;
         }
 
-        public View CreateOrGetActiveView(UiViewModel viewModel, bool forced = false, Transform containerLayer = null)
+        public View GetOrCreateActiveView(UiViewModel viewModel, bool forced = false, Transform containerLayer = null)
         {
             var fullName = viewModel.GetType().FullName;
 
@@ -139,7 +122,7 @@ namespace Assets._Game_.Services.UI_Service.Implementation
             }
             else
             {
-                view = CreateView(viewModel, forced, containerLayer);
+                view = CreateView(viewModel , forced, containerLayer);
 
                 _createdViewCache.Add(fullName, view);
             }

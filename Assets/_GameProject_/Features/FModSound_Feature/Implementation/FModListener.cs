@@ -1,7 +1,7 @@
 using FMODUnity;
 using UnityEngine;
 
-namespace FMod_Feature
+namespace WKosArch.FModSound_Feature
 {
     public class FModListener : MonoBehaviour
     {
@@ -28,7 +28,10 @@ namespace FMod_Feature
         private void UpdatePosition()
         {
             if (Camera.main != null)
+            {
                 transform.position = Camera.main.transform.position;
+                transform.rotation = Camera.main.transform.rotation;
+            }
         }
     } 
 }

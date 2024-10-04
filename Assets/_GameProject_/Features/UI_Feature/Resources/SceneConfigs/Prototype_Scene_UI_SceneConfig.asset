@@ -12,24 +12,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1527d79005dfd304893aa7df04aebaa4, type: 3}
   m_Name: Prototype_Scene_UI_SceneConfig
   m_EditorClassIdentifier: 
+  UiConfigs:
+  - Key: WKosArch.Sound_Feature.AudioSettingViewModel
+    Value: {fileID: 2945317383277880485, guid: 55b2eed892c67f84e97acf48ddbdb6f0, type: 3}
   _windowPrefabs:
-  - ViewModelTypeFullName: MainMenuWindowModel
-    PrefabView: {fileID: 0}
-  - ViewModelTypeFullName: AboutUsWindowModel
-    PrefabView: {fileID: 0}
-  - ViewModelTypeFullName: RestartWindowModel
-    PrefabView: {fileID: 0}
-  - ViewModelTypeFullName: QuitGameWindowModel
-    PrefabView: {fileID: 0}
-  - ViewModelTypeFullName: WKosArch.Sound_Feature.AudioSettingViewModel
-    PrefabView: {fileID: 2945317383277880485, guid: 55b2eed892c67f84e97acf48ddbdb6f0, type: 3}
-  - ViewModelTypeFullName: SettingWindowViewModel
-    PrefabView: {fileID: 0}
+  - Key: WKosArch.Sound_Feature.AudioSettingViewModel
+    Value: {fileID: 2945317383277880485, guid: 55b2eed892c67f84e97acf48ddbdb6f0, type: 3}
   _hudPrefabs: []
   _widgetPrefabs: []
   SceneName:
   - Boot_Scene
-  - First_Scene
+  - Prototype_Scene
   - MainMenu_Scene
   SceneIndex: 000000000200000001000000
   _scenes:

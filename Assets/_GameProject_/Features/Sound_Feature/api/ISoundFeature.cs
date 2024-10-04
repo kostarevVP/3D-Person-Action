@@ -1,14 +1,15 @@
 ﻿using UnityEngine.InputSystem.Haptics;
 using WKosArch.Domain.Features;
+using WKosArch.GameState_Feature;
 
 namespace WKosArch.Sound_Feature
 {
-    public interface ISoundFeature : IFeature
+    public interface ISoundFeature<TSound> : IFeature where TSound : ISound
     {
-        public ISoundSettings Settings { get; }
-        public IUiSounds UiSounds { get; }
-        public SfxSounds SfxSounds { get; }
-        public IMusicSounds MusicSounds { get; }
+        public SoundSettingsStateProxy Settings { get; }
+        public ISounds<TSound> UiSounds { get; }
+        public ISounds<TSound> SfxSounds { get; }
+        public ISounds<TSound> MusicSounds { get; }
         public IHaptics Haptics { get; }
 
         void MuteAll();

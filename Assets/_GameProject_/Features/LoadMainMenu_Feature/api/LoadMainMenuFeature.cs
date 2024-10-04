@@ -1,24 +1,20 @@
-﻿using WKosArch.Extentions;
-using WKosArch.Services.Scenes;
-using WKosArch.Services.UIService.UI;
+﻿using WKosArch.Extensions;
+using WKosArch.UI_Feature;
 using WKosArch.Sound_Feature;
+using WKosArch.SceneManagement_Feature;
+using WKosArch.GameState_Feature;
 
-public class LoadMainMenuFeature : ILoadMainMenuFeature
+public class LoadMainMenuFeature : ILoadMainMenuFeature, ISaveGameState
 {
-    private readonly ISaveLoadHandlerService _saveLoadHandler;
     private readonly ISceneManagementFeature _sceneManagementService;
-    private readonly IUserInterface _ui;
+    private readonly IUserInterfaceFeature _ui;
 
 
 
-    public LoadMainMenuFeature(ISceneManagementFeature sceneManagementService,
-        IUserInterface ui,
-        ISaveLoadHandlerService saveLoadHandler)
+    public LoadMainMenuFeature(ISceneManagementFeature sceneManagementService, IUserInterfaceFeature ui)
     {
         _sceneManagementService = sceneManagementService;
         _ui = ui;
-        _saveLoadHandler = saveLoadHandler;
-        _saveLoadHandler.AddSaveLoadHolder(this);
 
         Subscribe();
     }
@@ -35,17 +31,14 @@ public class LoadMainMenuFeature : ILoadMainMenuFeature
         _sceneManagementService.OnSceneStarted -= SceneStarted;
     }
 
+
     private void SceneLoaded(string sceneName)
     {
-        _saveLoadHandler.InformLoadHolders();
-
         LoadGameLevelEnvironment();
-
     }
 
     private void SceneStarted(string sceneName)
     {
-        ShowUI();
 
     }
 
@@ -53,6 +46,7 @@ public class LoadMainMenuFeature : ILoadMainMenuFeature
     {
         Log.PrintYellow("Load MainMenu environment");
 
+        ShowUI();
 
         SpawnPlayer();
 
@@ -71,26 +65,16 @@ public class LoadMainMenuFeature : ILoadMainMenuFeature
 
     private void ShowUI()
     {
-        //_ui.Show<FpsInfoHudViewModel>();
-        //_ui.Show<SettingWindowViewModel>();
-        //_ui.Show<JoystickHudViewModel>();
-        //_ui.Show<PlayerDataHudViewModel>();
-        //_ui.Show<EnemyHudViewModel>();
         _ui.Show<AudioSettingViewModel>();
     }
 
-
-    public void SaveProgress(GameProgressData progress)
+    public void SaveProgress(GameStateProxy progress)
     {
-        //var sceneIndex = _sceneManagementService.CurrentSceneIndex;
-        //progress.SceneProgressData.SceneIndex = sceneIndex;
-        //progress.SceneProgressData.PlayerProgressData.LocalTransform = _factorySystem.GetLocalTransform(_player);
+
     }
 
-    public void LoadProgress(GameProgressData progress)
+    public void LoadProgress(GameStateProxy progress)
     {
-        var sceneIndex = _sceneManagementService.CurrentSceneIndex;
-        if (sceneIndex != progress.SceneProgressData.SceneIndex)
-            return;
+        
     }
 }

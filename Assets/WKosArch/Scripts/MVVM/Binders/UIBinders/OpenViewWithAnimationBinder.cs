@@ -1,5 +1,5 @@
 ﻿using UnityEngine;
-using WKosArch.Services.UIService.Common;
+using WKosArch.UI_Feature;
 
 namespace WKosArch.MVVM.Binders
 {

@@ -1,11 +1,10 @@
-using Assets.Game.Services.ProgressService.api;
 using Lofelt.NiceVibrations;
 using MoreMountains.Tools;
 using UnityEngine;
 
 namespace WKosArch.Sound_Feature
 {
-    public class SoundManager : MonoBehaviour, ISavedProgress
+    public class SoundManager : MonoBehaviour
     {
         private const string PrefabPath = "[SOUND_MANGER]";
 
@@ -39,23 +38,6 @@ namespace WKosArch.Sound_Feature
         private void Update()
         {
             UpdatePosition();
-        }
-
-        public void SaveProgress(GameProgressData progress)
-        {
-            //MMSoundManager.SaveSettings();
-            //progress.SoundSetting = MMSoundManager.settingsSo.Settings;
-
-            //progress.Haptic = HapticReceiver.hapticsEnabled;
-        }
-
-        public void LoadProgress(GameProgressData progress)
-        {
-            //MMSoundManager.settingsSo.Settings = progress.SoundSetting;
-            //MMSoundManager.settingsSo.SaveSoundSettings();
-            //MMSoundManager.LoadSettings();
-
-            //HapticReceiver.hapticsEnabled = progress.Haptic;
         }
 
         private void UpdatePosition()

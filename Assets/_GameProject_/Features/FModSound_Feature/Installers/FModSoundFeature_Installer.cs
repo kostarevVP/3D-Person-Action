@@ -1,57 +1,112 @@
+using UnityEngine;
 using WKosArch.DependencyInjection;
 using WKosArch.Domain.Contexts;
 using WKosArch.Domain.Features;
-using WKosArch.Extentions;
-using UnityEngine;
-using FMod_Feature;
-using Assets.Game.Services.ProgressService.api;
-using FModSound_Feature.Implementation;
+using WKosArch.Extensions;
 using WKosArch.Sound_Feature;
+using WKosArch.GameState_Feature;
+using WKosArch.Configs_Feature;
+using WKosArch.SceneManagement_Feature;
 
 
-[CreateAssetMenu(fileName = "FModSoundFeature_Installer", menuName = "Game/Installers/FModSoundFeature_Installer")]
-public class FModSoundFeature_Installer : FeatureInstaller
+namespace WKosArch.FModSound_Feature
 {
-    [SerializeField]
-    private FModEventsConfig _fModEventsConfig;
-
-    private ISoundFeature _feature;
-
-    public override IFeature Create(IDiContainer container)
+    [CreateAssetMenu(fileName = "SoundFModSoundFeature", menuName = "Game/Installers/SoundFModSoundFeature_Installer")]
+    public class FModSoundFeature_Installer : FeatureInstaller
     {
-        //var fModListener = FModListener.CreateInstance();
-        var soundProgress = container.Resolve<IProgressFeature>().GameProgressData.GlobalProgress.SoundProgressData;
-        var saveLoadHolder = container.Resolve<ISaveLoadHandlerService>();
-        SoundSettingsData soundProgressData = container.Resolve<IProgressFeature>().GameProgressData.GlobalProgress.SoundProgressData;
+        [SerializeField]
+        private SoundsSceneConfig _fModSoundGlobalConfig;
+        [Space]
+        [SerializeField]
+        private bool _enableFModECSFactory;
+
+        private ISceneManagementFeature _sceneManagementService;
+        private IConfigsFeature _configsFeature;
+
+        private ISoundConfigLoader _soundFeatureConfigLoader;
+        private ISoundConfigLoader _fModECSFactorySoundConfigLoader;
+
+        public override IFeature Create(IDiContainer container)
+        {
+            _sceneManagementService = container.Resolve<ISceneManagementFeature>();
+            _configsFeature = container.Resolve<IConfigsFeature>();
+
+            Subscribe();
+
+            GameSettingStateProxy gameSettingsState = container.Resolve<IGameStateProviderFeature>().GameSettingsState;
+            SoundSettingsStateProxy soundSettingsStateProxy = gameSettingsState.SoundSettingsStateProxy.Value;
+
+            ISoundFeature<FModSound> feature = new FModSoundFeature(soundSettingsStateProxy);
+            _soundFeatureConfigLoader = feature as ISoundConfigLoader;
+
+            if (_enableFModECSFactory)
+            {
+                IFModSoundECSFactory fModECSFactory = new FModSoundECSFactory();
+                _fModECSFactorySoundConfigLoader = fModECSFactory as ISoundConfigLoader;
+                RegisterFeatureAsSingleton(container, fModECSFactory);
+            }
 
 
-        _feature = new FModSoundFeature(soundProgressData);
+            LoadGlobalSoundConfig();
 
-        //FModManager fModManager = FModManager.CreateInstnace();
-        //fModManager.FModFeature = _feature;
 
-        //saveLoadHolder.AddSaveLoadHolder(_feature);
+            RegisterFeatureAsSingleton(container, feature);
 
-        //RegisterFModManagerAsSingleton(container, fModManager);
+            return feature;
+        }
 
-        RegisterFeatureAsSingleton(container, _feature);
 
-        return _feature;
-    }
+        public override void Dispose()
+        {
+            Unsubscribe();
+        }
 
-    public override void Dispose() 
-    {
 
-    }
+        private void RegisterFeatureAsSingleton(IDiContainer container, ISoundFeature<FModSound> feature)
+        {
+            container.RegisterSingleton(_ => feature);
+            Log.PrintColor($"[FModSoundFeature - ISoundFeature<FModSound>] Create and RegisterSingleton", Color.cyan);
+        }
 
-    private void RegisterFeatureAsSingleton(IDiContainer container, ISoundFeature feature)
-    {
-        container.RegisterSingleton(_ => feature);
-        Log.PrintColor($"[ISoundFeature] Create and RegisterSingleton", Color.cyan);
-    }
-    private void RegisterFModManagerAsSingleton(IDiContainer container, FModManager fModManager)
-    {
-        container.RegisterSingleton(_ => fModManager);
-        Log.PrintColor($"[FModManager] Create and RegisterSingleton", Color.cyan);
+        private void RegisterFeatureAsSingleton(IDiContainer container, IFModSoundECSFactory feature)
+        {
+            container.RegisterSingleton(_ => feature);
+            Log.PrintColor($"[FModSoundECSFactory - IFModECSFactory] Create and RegisterSingleton", Color.cyan);
+        }
+
+        private void LoadGlobalSoundConfig()
+        {
+            var soundConfigMap = ConfigUtils.CreateDictionary<SoundType, SoundConfig, SoundConfigMapping>(_fModSoundGlobalConfig.SoundConfigs);
+
+            _soundFeatureConfigLoader.LoadSoundGlobalConfigMap(soundConfigMap);
+
+            if (_enableFModECSFactory)
+                _fModECSFactorySoundConfigLoader.LoadSoundGlobalConfigMap(soundConfigMap);
+        }
+
+        private void SceneLoaded(string scene)
+        {
+            LoadSceneSoundConfig(scene);
+        }
+
+        private void LoadSceneSoundConfig(string scene)
+        {
+            var soundConfigMap = _configsFeature.SceneSoundConfigsMap[scene];
+
+            _soundFeatureConfigLoader.LoadSoundSceneConfigMap(soundConfigMap);
+
+            if (_enableFModECSFactory)
+                _fModECSFactorySoundConfigLoader.LoadSoundGlobalConfigMap(soundConfigMap);
+        }
+
+        private void Subscribe()
+        {
+            _sceneManagementService.OnSceneLoaded += SceneLoaded;
+        }
+
+        private void Unsubscribe()
+        {
+            _sceneManagementService.OnSceneLoaded -= SceneLoaded;
+        }
     }
 }

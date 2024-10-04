@@ -2,7 +2,7 @@ using UnityEngine;
 using WKosArch.DependencyInjection;
 using WKosArch.Domain.Contexts;
 using WKosArch.Domain.Features;
-using WKosArch.Extentions;
+using WKosArch.Extensions;
 
 
 namespace Input_Feature

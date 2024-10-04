@@ -4,7 +4,7 @@ using System.Linq;
 using UnityEditor;
 using UnityEditor.Experimental.GraphView;
 using UnityEngine;
-using WKosArch.Services.UIService.Common;
+using WKosArch.UI_Feature;
 
 namespace WKosArch.MVVM.Editor
 {

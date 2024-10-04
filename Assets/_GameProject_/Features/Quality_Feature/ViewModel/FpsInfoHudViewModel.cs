@@ -1,9 +1,7 @@
-using WKosArch;
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
-public class FpsInfoHudViewModel : HudViewModel
+namespace WKosArch.Quality_Feature
 {
-    
+    public class FpsInfoHudViewModel : HudViewModel
+	{
+
+	} 
 }

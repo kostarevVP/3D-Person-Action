@@ -23,7 +23,7 @@ namespace WKosArch.Domain.Contexts
 
         protected override IDiContainer CreateLocalContainer(IDiContainer dIContainer = null)
         {
-            var rootContainer = new DiContainer();
+            DiContainer rootContainer = new DiContainer();
             rootContainer.RegisterSingleton(_ => this);
 
             return rootContainer;

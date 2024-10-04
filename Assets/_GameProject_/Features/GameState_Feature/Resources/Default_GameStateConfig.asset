@@ -1,0 +1,32 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fda44f1ffb5cb1f4d8b132b17ce103e7, type: 3}
+  m_Name: Default_GameStateConfig
+  m_EditorClassIdentifier: 
+  _firstSceneToLoad: {fileID: 102900000, guid: 08ac429de7017c144afdfcb429924075, type: 3}
+  FirstSceneToLoadName: MainMenu_Scene
+  FirstSceneToLoadIndex: 1
+  PlayerState:
+    Id: 0
+    Name: PlayerUnknown
+    Wallet:
+      HardCurrencyName: Diamond
+      SoftCurrencyName: Gold
+      HardCurrency: 15
+      SoftCurrency: 100
+  SceneStates:
+  - PlayerPosition: {x: 0, y: 0, z: 0}
+    PlayerRotation: {x: 0, y: 0, z: 0, w: 0}
+  - PlayerPosition: {x: 100, y: 100, z: 100}
+    PlayerRotation: {x: 0, y: 0, z: 0, w: 0}
+  - PlayerPosition: {x: 0, y: 0, z: 0}
+    PlayerRotation: {x: 0, y: 0, z: 0, w: 0}

@@ -1,30 +1,35 @@
 using WKosArch.MVVM;
 using System.Collections.Generic;
-using UnityEditor;
 using UnityEngine;
-using UnityEngine.SceneManagement;
-using WKosArch.Extentions;
 
-namespace WKosArch.Services.UIService
+
+#if UNITY_EDITOR
+using WKosArch.Extensions;
+using UnityEditor;
+using UnityEngine.SceneManagement;
+using System.Linq;
+#endif
+
+namespace WKosArch.UI_Feature
 {
-    [CreateAssetMenu(fileName = "UI_SceneConfig", menuName = "UI/Configs/_UI_SceneConfig")]
+    [CreateAssetMenu(fileName = "UISceneConfig", menuName = "UI/Configs/_UISceneConfig")]
     public class UISceneConfig : ScriptableObject
     {
-        [SerializeField] private List<ViewModelToViewMapping> _windowPrefabs;
-        [SerializeField] private List<ViewModelToViewMapping> _hudPrefabs;
-        [SerializeField] private List<ViewModelToViewMapping> _widgetPrefabs;
+        [HideInInspector]
+        public List<ViewModelToViewMapping> UiConfigs = new List<ViewModelToViewMapping>();
+        [HideInInspector]
+        public string[] SceneName;
+        [HideInInspector]
+        public int[] SceneIndex;
 
-        private readonly Dictionary<string, View> _windowMappings = new();
-        private readonly Dictionary<string, View> _hudMappings = new();
-        private readonly Dictionary<string, View> _widgetMappings = new();
+        [SerializeField]
+        private List<ViewModelToViewMapping> _windowPrefabs;
+        [SerializeField]
+        private List<ViewModelToViewMapping> _hudPrefabs;
+        [SerializeField]
+        private List<ViewModelToViewMapping> _widgetPrefabs;
 
-        public Dictionary<string, View> WindowMappings => _windowMappings;
-        public Dictionary<string, View> HudMappings => _hudMappings;
-        public Dictionary<string, View> WidgetMappings => _widgetMappings;
 
-
-        [HideInInspector] public string[] SceneName;
-        [HideInInspector] public int[] SceneIndex;
 
 #if UNITY_EDITOR
         [Space]
@@ -53,28 +58,8 @@ namespace WKosArch.Services.UIService
                 }
             }
 
-            //RefreshMappings(_windowMappings, _windowPrefabs);
-            //RefreshMappings(_hudMappings, _hudPrefabs);
-            //RefreshMappings(_widgetMappings, _widgetPrefabs);
-
+            Compose();
         }
-#endif
-
-        public void InitilizationMapps()
-        {
-            RefreshMappings(_windowMappings, _windowPrefabs);
-            RefreshMappings(_hudMappings, _hudPrefabs);
-            RefreshMappings(_widgetMappings, _widgetPrefabs);
-        }
-
-        private void RefreshMappings(Dictionary<string, View> maping, List<ViewModelToViewMapping> prefabMappings)
-        {
-            foreach (var prefabMapping in prefabMappings)
-            {
-                maping.TryAdd(prefabMapping.ViewModelTypeFullName, prefabMapping.PrefabView);
-            }
-        }
-
 
         private int GetSceneIndexByName(string sceneName)
         {
@@ -92,5 +77,15 @@ namespace WKosArch.Services.UIService
             Debug.LogError("Scene not found in build settings: " + sceneName);
             return -1;
         }
+
+        private void Compose()
+        {
+            UiConfigs = _windowPrefabs
+                .Concat(_hudPrefabs)
+                .Concat(_widgetPrefabs)
+                .Distinct()
+                .ToList();
+        }
+#endif
     }
 }

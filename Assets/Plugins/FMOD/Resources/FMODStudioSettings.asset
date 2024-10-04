@@ -670,7 +670,7 @@ MonoBehaviour:
   m_Name: FMODStudioSettings
   m_EditorClassIdentifier: 
   switchSettingsMigration: 1
-  HasSourceProject: 1
+  HasSourceProject: 0
   HasPlatforms: 1
   sourceProjectPath: 3D-Person-Action_FMod/3D-Person-Action/3D-Person-Action.fspro
   sourceBankPath: 3D-Person-Action_FMod/3D-Person-Action/Build
@@ -722,7 +722,7 @@ MonoBehaviour:
   SharedLibraryUpdateStage: 0
   SharedLibraryTimeSinceStart: 0
   CurrentVersion: 131619
-  HideSetupWizard: 0
+  HideSetupWizard: 1
   LastEventReferenceScanVersion: 131619
   Platforms:
   - {fileID: -7983903769502202212}

@@ -1,22 +1,24 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-public class FPSCounter : MonoBehaviour
+namespace WKosArch.Quality_Feature
 {
-    /// <summary>
-    /// The frequency at which the FPS counter should update (in seconds)
-    /// </summary>
-    public float UpdateInterval = 0.3f;
+    public class FPSCounter : MonoBehaviour
+    {
+        /// <summary>
+        /// The frequency at which the FPS counter should update (in seconds)
+        /// </summary>
+        public float UpdateInterval = 0.3f;
 
-    protected float _framesAccumulated = 0f;
-    protected float _framesDrawnInTheInterval = 0f;
-    protected float _timeLeft;
-    protected Text _text;
-    protected int _currentFPS;
+        protected float _framesAccumulated = 0f;
+        protected float _framesDrawnInTheInterval = 0f;
+        protected float _timeLeft;
+        protected Text _text;
+        protected int _currentFPS;
 
 
 
-    static string[] _stringsFrom00To300 = {
+        static string[] _stringsFrom00To300 = {
             "00", "01", "02", "03", "04", "05", "06", "07", "08", "09",
             "10", "11", "12", "13", "14", "15", "16", "17", "18", "19",
             "20", "21", "22", "23", "24", "25", "26", "27", "28", "29",
@@ -50,59 +52,60 @@ public class FPSCounter : MonoBehaviour
             "300"
         };
 
-    /// <summary>
-    /// On Start(), we get the Text component and initialize our counter
-    /// </summary>
-    protected virtual void Start()
-    {
-        if (GetComponent<Text>() == null)
+        /// <summary>
+        /// On Start(), we get the Text component and initialize our counter
+        /// </summary>
+        protected virtual void Start()
         {
-            Debug.LogWarning("FPSCounter requires a GUIText component.");
-            return;
-        }
-        _text = GetComponent<Text>();
-        _timeLeft = UpdateInterval;
-    }
-
-    /// <summary>
-    /// On Update, we increment our various counters, and if we've reached our UpdateInterval, we update our FPS counter
-    /// with the number of frames displayed since the last counter update
-    /// </summary>
-    protected virtual void Update()
-    {
-        _framesDrawnInTheInterval++;
-        _framesAccumulated = _framesAccumulated + Time.timeScale / Time.deltaTime;
-        _timeLeft = _timeLeft - Time.deltaTime;
-
-        if (_timeLeft <= 0.0)
-        {
-            _currentFPS = (int)Mathf.Clamp(_framesAccumulated / _framesDrawnInTheInterval, 0, 300);
-            if (_currentFPS >= 0 && _currentFPS <= 300)
+            if (GetComponent<Text>() == null)
             {
-                _text.text = _stringsFrom00To300[_currentFPS];
+                Debug.LogWarning("FPSCounter requires a GUIText component.");
+                return;
             }
-            _framesDrawnInTheInterval = 0;
-            _framesAccumulated = 0f;
+            _text = GetComponent<Text>();
             _timeLeft = UpdateInterval;
         }
 
+        /// <summary>
+        /// On Update, we increment our various counters, and if we've reached our UpdateInterval, we update our FPS counter
+        /// with the number of frames displayed since the last counter update
+        /// </summary>
+        protected virtual void Update()
+        {
+            _framesDrawnInTheInterval++;
+            _framesAccumulated = _framesAccumulated + Time.timeScale / Time.deltaTime;
+            _timeLeft = _timeLeft - Time.deltaTime;
 
-//#if DEVELOPMENT_BUILD || UNITY_EDITOR
-//        if (Input.GetKey(KeyCode.LeftShift))
-//        {
-//            if (Input.GetKeyUp(KeyCode.F1))
-//                Application.targetFrameRate = 10;
-//            if (Input.GetKeyUp(KeyCode.F2))
-//                Application.targetFrameRate = 20;
-//            if (Input.GetKeyUp(KeyCode.F3))
-//                Application.targetFrameRate = 30;
-//            if (Input.GetKeyUp(KeyCode.F4))
-//                Application.targetFrameRate = 60;
-//            if (Input.GetKeyUp(KeyCode.F5))
-//                Application.targetFrameRate = 120;
-//            if (Input.GetKeyUp(KeyCode.F5))
-//                Application.targetFrameRate = 240;
-//        } 
-//#endif
-    }
-}   
+            if (_timeLeft <= 0.0)
+            {
+                _currentFPS = (int)Mathf.Clamp(_framesAccumulated / _framesDrawnInTheInterval, 0, 300);
+                if (_currentFPS >= 0 && _currentFPS <= 300)
+                {
+                    _text.text = _stringsFrom00To300[_currentFPS];
+                }
+                _framesDrawnInTheInterval = 0;
+                _framesAccumulated = 0f;
+                _timeLeft = UpdateInterval;
+            }
+
+
+            //#if DEVELOPMENT_BUILD || UNITY_EDITOR
+            //        if (Input.GetKey(KeyCode.LeftShift))
+            //        {
+            //            if (Input.GetKeyUp(KeyCode.F1))
+            //                Application.targetFrameRate = 10;
+            //            if (Input.GetKeyUp(KeyCode.F2))
+            //                Application.targetFrameRate = 20;
+            //            if (Input.GetKeyUp(KeyCode.F3))
+            //                Application.targetFrameRate = 30;
+            //            if (Input.GetKeyUp(KeyCode.F4))
+            //                Application.targetFrameRate = 60;
+            //            if (Input.GetKeyUp(KeyCode.F5))
+            //                Application.targetFrameRate = 120;
+            //            if (Input.GetKeyUp(KeyCode.F5))
+            //                Application.targetFrameRate = 240;
+            //        } 
+            //#endif
+        }
+    }    
+}

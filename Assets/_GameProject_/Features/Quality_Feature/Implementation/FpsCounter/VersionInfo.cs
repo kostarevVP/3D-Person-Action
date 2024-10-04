@@ -1,21 +1,24 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-public class VersionInfo : MonoBehaviour
+namespace WKosArch.Quality_Feature
 {
-    private Text _text;
-
-    void Start()
+    public class VersionInfo : MonoBehaviour
     {
-        if (GetComponent<Text>() == null)
+        private Text _text;
+
+        void Start()
         {
-            Debug.LogWarning("VersionInfo requires a GUIText component.");
-            return;
+            if (GetComponent<Text>() == null)
+            {
+                Debug.LogWarning("VersionInfo requires a GUIText component.");
+                return;
+            }
+            _text = GetComponent<Text>();
+
+            string appVersion = Application.version;
+
+            _text.text = "V. " + appVersion;
         }
-        _text = GetComponent<Text>();
-
-        string appVersion = Application.version;
-
-        _text.text = "V. " + appVersion;
     }
 }

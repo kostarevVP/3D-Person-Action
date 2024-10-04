@@ -1,43 +1,44 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Rendering;
-using WKosArch.Extentions;
+using WKosArch.Extensions;
 
-public class QualityFeature : IQualityFeature
+namespace WKosArch.Quality_Feature
 {
-    private Dictionary<RenderingQuality, RenderPipelineAsset> _renderQualityConfigMap;
-    private bool _isReady;
-
-    public bool IsReady => _isReady;
-
-    public QualityFeature(Dictionary<RenderingQuality, RenderPipelineAsset> renderQualityConfigMap)
+    public class QualityFeature : IQualityFeature
     {
-        _renderQualityConfigMap = renderQualityConfigMap;
-        _isReady = true;
-    }
+        private Dictionary<RenderingQuality, RenderPipelineAsset> _renderQualityConfigMap;
 
-    public void SetFPSLimit(int targetFPS)
-    {
-        Application.targetFrameRate = targetFPS;
-    }
 
-    public void SetRenderPipeline(RenderingQuality renderingQuality)
-    {
-        if (_renderQualityConfigMap.TryGetValue(renderingQuality, out var renderPipelineAsset))
+        public QualityFeature(Dictionary<RenderingQuality, RenderPipelineAsset> renderQualityConfigMap)
         {
-            GraphicsSettings.defaultRenderPipeline = renderPipelineAsset;
+            _renderQualityConfigMap = renderQualityConfigMap;
         }
-        else
+
+        public void SetFPSLimit(int targetFPS)
         {
-            Log.PrintWarning($"Not find {renderingQuality} RenderingQuality in URPRenderersConfig");
+            Application.targetFrameRate = targetFPS;
+        }
+
+        public void SetRenderPipeline(RenderingQuality renderingQuality)
+        {
+            if (_renderQualityConfigMap.TryGetValue(renderingQuality, out var renderPipelineAsset))
+            {
+                GraphicsSettings.defaultRenderPipeline = renderPipelineAsset;
+            }
+            else
+            {
+                Log.PrintWarning($"Not find {renderingQuality} RenderingQuality in URPRenderersConfig");
+            }
         }
     }
-}
 
-public enum RenderingQuality
-{
-    Low,
-    Medium,
-    High,
-    Ultra
+    public enum RenderingQuality
+    {
+        Low,
+        Medium,
+        High,
+        Ultra
+    }
+
 }

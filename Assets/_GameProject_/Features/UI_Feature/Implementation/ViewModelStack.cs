@@ -1,8 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
-using WKosArch.Services.UIService.UI;
 
-namespace WKosArch.UIService.Views.Windows
+namespace WKosArch.UI_Feature
 {
     public class ViewModelStack<TreeNode> where TreeNode : ViewModelTreeNode
     {

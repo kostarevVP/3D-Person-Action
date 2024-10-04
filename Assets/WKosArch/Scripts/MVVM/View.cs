@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
 using WKosArch.MVVM.Binders;
 using UnityEngine;
-using WKosArch.Services.UIService.Common;
+using WKosArch.UI_Feature;
+using System.Linq;
 
 namespace WKosArch.MVVM
 {
@@ -165,8 +165,6 @@ namespace WKosArch.MVVM
         {
             _subViews.Remove(view);
         }
-
-
 #endif
     }
 }

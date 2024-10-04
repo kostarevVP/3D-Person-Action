@@ -1,22 +1,11 @@
-﻿using System.Collections.Generic;
-using UnityEngine;
-using UnityEngine.Rendering;
-using WKosArch.Extentions;
+﻿using UnityEngine;
+using System.Collections.Generic;
 
-[CreateAssetMenu(fileName = "URPRenderersConfig", menuName = "QualityConfig/URPRenderersConfig")]
-public class URPRenderersConfig : ScriptableObject
+namespace WKosArch.Quality_Feature
 {
-    public RenderPipelineAsset LowQualityPipeline;
-    public RenderPipelineAsset MediumQualityPipeline;
-    public RenderPipelineAsset HighQualityPipeline;
-
-    public Dictionary<RenderingQuality, RenderPipelineAsset> RendererQualityMap = new Dictionary<RenderingQuality, RenderPipelineAsset>();
-   
-
-    public void Init()
+    [CreateAssetMenu(fileName = "URPRenderersConfig", menuName = "Game/Configs/QualityConfig/URPRenderersConfig")]
+    public class URPRenderersConfig : ScriptableObject
     {
-        RendererQualityMap.Add(RenderingQuality.Low, LowQualityPipeline);
-        RendererQualityMap.Add(RenderingQuality.Medium, MediumQualityPipeline);
-        RendererQualityMap.Add(RenderingQuality.High, HighQualityPipeline);
-    }
+        public List<URPRenderersConfigMapping> URPRenderersConfigMapping; 
+   }
 }

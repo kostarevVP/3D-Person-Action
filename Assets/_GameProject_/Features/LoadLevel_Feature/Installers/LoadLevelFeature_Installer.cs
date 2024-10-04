@@ -1,11 +1,10 @@
 using UnityEngine;
+using WKosArch.Extensions;
 using WKosArch.Domain.Contexts;
 using WKosArch.Domain.Features;
-using WKosArch.Extentions;
-using WKosArch.Services.Scenes;
-using WKosArch.Services.UIService;
-using WKosArch.Services.UIService.UI;
+using WKosArch.UI_Feature;
 using WKosArch.DependencyInjection;
+using WKosArch.SceneManagement_Feature;
 
 namespace WKosArch.Features.LoadLevelFeature
 {
@@ -13,29 +12,24 @@ namespace WKosArch.Features.LoadLevelFeature
     public class LoadLevelFeature_Installer : FeatureInstaller
     {
         ILoadLevelFeature _loadLevelFeature;
-        public override IFeature Create(IDiContainer container)
+        public override IFeature Create(IDiContainer container) 
         {
             ISceneManagementFeature sceneManagementService = container.Resolve<ISceneManagementFeature>();
-            IUserInterface ui = container.Resolve<IUiFeature>().UI;
-            ISaveLoadHandlerService saveLoadHandler = container.Resolve<ISaveLoadHandlerService>();
+            IUserInterfaceFeature ui = container.Resolve<IUserInterfaceFeature>();
 
-            _loadLevelFeature = new LoadLevelFeature(sceneManagementService,
-                ui, saveLoadHandler);
+            _loadLevelFeature = new LoadLevelFeature(sceneManagementService, ui);
 
             RegisterFeatureAsSingleton(container, _loadLevelFeature);
 
             return _loadLevelFeature;
         }
 
-        public override void Dispose() 
-        {
-            _loadLevelFeature?.Dispose();
-        }
+        public override void Dispose() { }
 
         private void RegisterFeatureAsSingleton(IDiContainer container, ILoadLevelFeature feature)
         {
             container.RegisterSingleton(_ => feature);
-            Log.PrintColor($"[ILoadLevelFeature] Create and RegesterSingleton", Color.cyan);
+            Log.PrintColor($"[ILoadLevelFeature] Create and RegisterSingleton", Color.cyan);
         }
     }
 }

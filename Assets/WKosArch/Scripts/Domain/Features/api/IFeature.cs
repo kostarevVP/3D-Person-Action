@@ -8,7 +8,7 @@ namespace WKosArch.Domain.Features
     {
         bool IsReady { get; }
         UniTask InitializeAsync();
-        UniTask DestroyAsync();
+        UniTask DisposeAsync();
     }
 
     public interface IFocusPauseFeature : IFeature

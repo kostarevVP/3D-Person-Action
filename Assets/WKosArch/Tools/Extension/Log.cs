@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace WKosArch.Extentions
+namespace WKosArch.Extensions
 {
     public static class Log
     {

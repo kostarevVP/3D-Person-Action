@@ -1,11 +1,11 @@
 ﻿using UnityEngine;
-using WKosArch.Services.UIService.Common;
+using WKosArch.UI_Feature;
 
 namespace WKosArch.MVVM.Binders
 {
     public class HideViewWithAnimationBinder : ObservableBinder<bool>
     {
-        [SerializeField] private GameObject _hideingGameObject;
+        [SerializeField] private GameObject _hidingGameObject;
         [Space]
         [SerializeField]
         private AnimationTransition _transitionOut = default;
@@ -17,16 +17,16 @@ namespace WKosArch.MVVM.Binders
                 await _transitionOut.Play();
             }
 
-           _hideingGameObject.SetActive(false);
+           _hidingGameObject.SetActive(false);
 
         }
 
 #if UNITY_EDITOR
         private void Reset()
         {
-            if (!_hideingGameObject)
+            if (!_hidingGameObject)
             {
-                _hideingGameObject = gameObject;
+                _hidingGameObject = gameObject;
             }
         }
 #endif

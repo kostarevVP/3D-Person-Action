@@ -17,16 +17,16 @@ namespace WKosArch.MVVM.Editor
         public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
         {
             _cachedViewModelTypes = TypeCache.GetTypesDerivedFrom<IViewModel>();
-            
-            var viewModelTypeFullName = property.FindPropertyRelative("ViewModelTypeFullName");
-            var prefabView = property.FindPropertyRelative("PrefabView");
-            
+
+            var viewModelTypeFullName = property.FindPropertyRelative("Key");
+            var prefabView = property.FindPropertyRelative("Value");
+
             ViewModelsEditorUtility.DefineAllViewModels(_viewModelNames);
 
             EditorGUI.BeginProperty(position, label, property);
-            
+
             EditorGUI.PrefixLabel(position, GUIUtility.GetControlID(FocusType.Passive), label);
-            
+
             EditorGUI.indentLevel += 1;
 
             var viewModelTypeLabelRect = new Rect(position.x, position.y + EditorGUIUtility.singleLineHeight + 5, EditorGUIUtility.currentViewWidth, EditorGUIUtility.singleLineHeight);
@@ -39,23 +39,24 @@ namespace WKosArch.MVVM.Editor
             provider.Init(options, result =>
             {
                 viewModelTypeFullName.stringValue = _viewModelNames[result];
-                
+
                 property.serializedObject.ApplyModifiedProperties();
             });
-               
+
             EditorGUI.PrefixLabel(viewModelTypeLabelRect, GUIUtility.GetControlID(FocusType.Passive), _viewModelLabelGUIContent);
-            var buttonDisplayName = string.IsNullOrEmpty(viewModelTypeFullName.stringValue)
+            var stringValue = viewModelTypeFullName.stringValue;
+            var buttonDisplayName = string.IsNullOrEmpty(stringValue)
                 ? MVVMConstants.NONE
                 : ViewModelsEditorUtility.ToShortName(viewModelTypeFullName.stringValue, _cachedViewModelTypes);
             var viewModelGuiContent = new GUIContent(buttonDisplayName);
-            
+
             if (EditorGUI.DropdownButton(viewModelTypeButtonRect, viewModelGuiContent, FocusType.Keyboard))
             {
                 SearchWindow.Open(new SearchWindowContext(GUIUtility.GUIToScreenPoint(Event.current.mousePosition)), provider);
             }
-            
+
             EditorGUI.PropertyField(prefabViewRect, prefabView, _prefabViewGUIContent);
-            
+
             EditorGUI.indentLevel -= 1;
             EditorGUI.EndProperty();
         }

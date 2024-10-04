@@ -1,50 +1,26 @@
-﻿using UnityEngine;
-using System;
+﻿using System;
+using UnityEngine;
 using FMODUnity;
+using WKosArch.Sound_Feature;
 
-
-#if UNITY_EDITOR
-using UnityEditor;
-#endif
-
-[CreateAssetMenu(fileName = "FModSoundConfig", menuName = "Game/Configs/FMod/FModSoundConfig")]
-public class FModSoundConfig : ScriptableObject
+namespace WKosArch.FModSound_Feature
 {
-    public EventReference Name;
-    public FloatParameterDefinition[] FloatParameters;
-    [Space]
-    [Header("Dont change Id its generate automaticly")]
-    public int Id;
-
-    [NonSerialized]
-    public int RuntimeIndex;
-
-
-
-#if UNITY_EDITOR
-    private void Reset()
+    [CreateAssetMenu(fileName = "SoundConfig", menuName = "Game/Configs/FMod/FModSoundSo")]
+    public class FModSoundConfig : SoundConfig
     {
-        var sounds = AssetDatabase.FindAssets("t:FModSoundConfig");
-        var firstAvailableId = 1;
-        foreach (var soundGuid in sounds)
-        {
-            var sound = AssetDatabase.LoadAssetAtPath<FModSoundConfig>(
-                AssetDatabase.GUIDToAssetPath(soundGuid));
-            if (sound.Id >= firstAvailableId)
-                firstAvailableId = sound.Id + 1;
-        }
+        public EventReference Name;
+        public FModParameter[] Parameters;
 
-        Id = firstAvailableId;
+        [NonSerialized]
+        public int RuntimeIndex;
     }
-#endif
-}
-[Serializable]
-public class FloatParameterDefinition
-{
-    public string Name;
-    public float DefaultValue;
 
-    [NonSerialized]
-    public int RuntimeIndex;
-}
+    [Serializable]
+    public class FModParameter
+    {
+        public ParamRef Parameter;
 
+        [NonSerialized]
+        public int RuntimeIndex;
+    }
+}

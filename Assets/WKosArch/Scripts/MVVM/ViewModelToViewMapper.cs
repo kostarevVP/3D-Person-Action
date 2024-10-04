@@ -14,7 +14,7 @@ namespace WKosArch.MVVM
         {
             foreach (var prefabMapping in _prefabMappings)
             {
-                _mappings.TryAdd(prefabMapping.ViewModelTypeFullName, prefabMapping.PrefabView);
+                _mappings.TryAdd(prefabMapping.Key, prefabMapping.Value);
             }
         }
 

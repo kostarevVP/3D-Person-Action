@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace WKosArch.Services.AssetProviderService
+namespace WKosArch.AssetProvider_Feature
 {
     public class AssetProviderFeature : IAssetProviderFeature
     {

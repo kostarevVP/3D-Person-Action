@@ -1,7 +1,7 @@
-﻿using Cysharp.Threading.Tasks;
-using UnityEngine;
+﻿using UnityEngine;
+using Cysharp.Threading.Tasks;
 
-namespace WKosArch.Services.UIService.Common
+namespace WKosArch.UI_Feature
 {
     public abstract class AnimationTransition : MonoBehaviour
     {

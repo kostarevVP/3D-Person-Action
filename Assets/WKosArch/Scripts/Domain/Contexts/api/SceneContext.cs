@@ -1,5 +1,4 @@
-﻿using WKosArch.Game;
-using UnityEngine;
+﻿using UnityEngine;
 using WKosArch.DependencyInjection;
 
 
@@ -22,7 +21,6 @@ namespace WKosArch.Domain.Contexts
             }
 #endif
         }
-
 
         protected override IDiContainer CreateLocalContainer(IDiContainer dIContainer = null)
         {
