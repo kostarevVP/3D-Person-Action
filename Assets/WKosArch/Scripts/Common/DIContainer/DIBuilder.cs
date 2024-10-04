@@ -1,17 +1,17 @@
 ﻿namespace WKosArch.DependencyInjection
 {
-    public sealed class DIBuilder<T>
-    {
-        private readonly DIEntry<T> _entry;
+    //public sealed class DIBuilder<T>
+    //{
+    //    private readonly DIEntry<T> _entry;
 
-        public DIBuilder(DIEntry<T> entry)
-        {
-            _entry = entry;
-        }
+    //    public DIBuilder(DIEntry<T> entry)
+    //    {
+    //        _entry = entry;
+    //    }
         
-        public T CreateInstance()
-        {
-            return _entry.Resolve();
-        }
-    }
+    //    public T CreateInstance()
+    //    {
+    //        return _entry.Resolve();
+    //    }
+    //}
 }

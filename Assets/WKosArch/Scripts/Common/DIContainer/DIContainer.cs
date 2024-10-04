@@ -4,163 +4,163 @@ using System.Linq;
 
 namespace WKosArch.DependencyInjection
 {
-    public class DiContainer : IDiContainer
-    {
-        private readonly Dictionary<(string, Type), DIEntry> _factoriesMap = new();
-        private readonly HashSet<(string, Type)> _cachedKeysForResolving = new();
+    //public class DiContainer : IDiContainer
+    //{
+    //    private readonly Dictionary<(string, Type), DIEntry> _factoriesMap = new();
+    //    private readonly HashSet<(string, Type)> _cachedKeysForResolving = new();
 
-        private readonly IDiContainer _parentDiContainer;
-        private readonly List<IDiContainer> _childContainers = new();
-
-
-
-        public DiContainer(IDiContainer parentDiContainer = null)
-        {
-            _parentDiContainer = parentDiContainer;
-
-            if(_parentDiContainer != null)
-                _parentDiContainer.AddChildContainer(this);
-        }
-
-        public DIBuilder<T> RegisterSingleton<T>(Func<DiContainer, T> factory)
-        {
-            return RegisterSingleton("", factory);
-        }
-
-        public DIBuilder<T> RegisterSingleton<T>(string tag, Func<DiContainer, T> factory)
-        {
-            var key = (tag, typeof(T));
-
-            return RegisterSingleton(key, factory);
-        }
-
-        public DIBuilder<T> Register<T>(Func<DiContainer, T> factory)
-        {
-            return Register("", factory);
-        }
-
-        public DIBuilder<T> Register<T>(string tag, Func<DiContainer, T> factory)
-        {
-            var key = (tag, typeof(T));
-
-            return Register(key, factory);
-        }
+    //    private readonly IDiContainer _parentDiContainer;
+    //    private readonly List<IDiContainer> _childContainers = new();
 
 
-        public T Resolve<T>(string tag = "")
-        {
-            var type = typeof(T);
-            var key = (tag, type);
 
-            if (_cachedKeysForResolving.Contains(key))
-            {
-                throw new Exception($"Cyclic dependencies. Key: {key}");
-            }
+    //    public DiContainer(IDiContainer parentDiContainer = null)
+    //    {
+    //        _parentDiContainer = parentDiContainer;
 
-            _cachedKeysForResolving.Add(key);
+    //        if(_parentDiContainer != null)
+    //            _parentDiContainer.AddChildContainer(this);
+    //    }
 
-            List<IDiContainer> registeredContainers = new List<IDiContainer>();
+    //    public DIBuilder<T> RegisterSingleton<T>(Func<DiContainer, T> factory)
+    //    {
+    //        return RegisterSingleton("", factory);
+    //    }
 
-            // Check the current container
-            if (_factoriesMap.ContainsKey(key))
-            {
-                registeredContainers.Add(this);
-            }
+    //    public DIBuilder<T> RegisterSingleton<T>(string tag, Func<DiContainer, T> factory)
+    //    {
+    //        var key = (tag, typeof(T));
 
-            // Check the parent container
-            if (_parentDiContainer is DiContainer parentContainer)
-            {
-                try
-                {
-                    parentContainer.Resolve<T>(tag);
-                    registeredContainers.Add(parentContainer);
-                }
-                catch {/*Ignore exception and continue*/}
-            }
+    //        return RegisterSingleton(key, factory);
+    //    }
 
-            // Check child containers
-            foreach (var childContainer in _childContainers)
-            {
-                try
-                {
-                    childContainer.Resolve<T>(tag);
-                    registeredContainers.Add(childContainer);
-                }
-                catch {/*Ignore exception and continue*/}
-            }
+    //    public DIBuilder<T> Register<T>(Func<DiContainer, T> factory)
+    //    {
+    //        return Register("", factory);
+    //    }
 
-            // If no containers have the key, raise an error
-            if (registeredContainers.Count == 0)
-            {
-                _cachedKeysForResolving.Remove(key);
-                throw new Exception($"There is no factory registered for key: {key}");
-            }
+    //    public DIBuilder<T> Register<T>(string tag, Func<DiContainer, T> factory)
+    //    {
+    //        var key = (tag, typeof(T));
 
-            // If more than one container has the key, raise an error
-            if (registeredContainers.Count > 1)
-            {
-                _cachedKeysForResolving.Remove(key);
-                throw new Exception($"Multiple factories registered for key: {key}");
-            }
+    //        return Register(key, factory);
+    //    }
 
-            // Resolve from the appropriate container
-            var result = registeredContainers.First().ResolveFromCurrent<T>();
 
-            _cachedKeysForResolving.Remove(key);
-            return result;
-        }
+    //    public T Resolve<T>(string tag = "")
+    //    {
+    //        var type = typeof(T);
+    //        var key = (tag, type);
 
-        public T ResolveFromCurrent<T>(string tag = "")
-        {
-            var type = typeof(T);
-            var key = (tag, type);
+    //        if (_cachedKeysForResolving.Contains(key))
+    //        {
+    //            throw new Exception($"Cyclic dependencies. Key: {key}");
+    //        }
 
-            if (_factoriesMap.TryGetValue(key, out DIEntry dIEntry))
-            {
-                return dIEntry.Resolve<T>();
-            }
+    //        _cachedKeysForResolving.Add(key);
 
-            throw new Exception($"No factory registered for key: {key}");
-        }
+    //        List<IDiContainer> registeredContainers = new List<IDiContainer>();
 
-        private DIBuilder<T> RegisterSingleton<T>((string, Type) key, Func<DiContainer, T> factory)
-        {
-            if (_factoriesMap.ContainsKey(key))
-            {
-                throw new Exception("Already has factory entry for key: " + key);
-            }
+    //        // Check the current container
+    //        if (_factoriesMap.ContainsKey(key))
+    //        {
+    //            registeredContainers.Add(this);
+    //        }
 
-            var diEntry = new DIEntrySingleton<T>(this, factory);
+    //        // Check the parent container
+    //        if (_parentDiContainer is DiContainer parentContainer)
+    //        {
+    //            try
+    //            {
+    //                parentContainer.Resolve<T>(tag);
+    //                registeredContainers.Add(parentContainer);
+    //            }
+    //            catch {/*Ignore exception and continue*/}
+    //        }
 
-            _factoriesMap[key] = diEntry;
+    //        // Check child containers
+    //        foreach (var childContainer in _childContainers)
+    //        {
+    //            try
+    //            {
+    //                childContainer.Resolve<T>(tag);
+    //                registeredContainers.Add(childContainer);
+    //            }
+    //            catch {/*Ignore exception and continue*/}
+    //        }
 
-            return new DIBuilder<T>(diEntry);
-        }
+    //        // If no containers have the key, raise an error
+    //        if (registeredContainers.Count == 0)
+    //        {
+    //            _cachedKeysForResolving.Remove(key);
+    //            throw new Exception($"There is no factory registered for key: {key}");
+    //        }
 
-        private DIBuilder<T> Register<T>((string, Type) key, Func<DiContainer, T> factory)
-        {
-            if (_factoriesMap.ContainsKey(key))
-            {
-                throw new Exception("Already has factory entry for type: " + key.Item2.Name);
-            }
+    //        // If more than one container has the key, raise an error
+    //        if (registeredContainers.Count > 1)
+    //        {
+    //            _cachedKeysForResolving.Remove(key);
+    //            throw new Exception($"Multiple factories registered for key: {key}");
+    //        }
 
-            var diEntry = new DIEntryTransient<T>(this, factory);
+    //        // Resolve from the appropriate container
+    //        var result = registeredContainers.First().ResolveFromCurrent<T>();
 
-            _factoriesMap[key] = diEntry;
+    //        _cachedKeysForResolving.Remove(key);
+    //        return result;
+    //    }
 
-            return new DIBuilder<T>(diEntry);
-        }
+    //    public T ResolveFromCurrent<T>(string tag = "")
+    //    {
+    //        var type = typeof(T);
+    //        var key = (tag, type);
 
-        public void AddChildContainer(IDiContainer container)
-        {
-            _childContainers.Add(container);
-        }
+    //        if (_factoriesMap.TryGetValue(key, out DIEntry dIEntry))
+    //        {
+    //            return dIEntry.Resolve<T>();
+    //        }
 
-        public void Dispose()
-        {
-            _factoriesMap.Clear();
-            _cachedKeysForResolving.Clear();
-            _childContainers.Clear();
-        }
-    }
+    //        throw new Exception($"No factory registered for key: {key}");
+    //    }
+
+    //    private DIBuilder<T> RegisterSingleton<T>((string, Type) key, Func<DiContainer, T> factory)
+    //    {
+    //        if (_factoriesMap.ContainsKey(key))
+    //        {
+    //            throw new Exception("Already has factory entry for key: " + key);
+    //        }
+
+    //        var diEntry = new DIEntrySingleton<T>(this, factory);
+
+    //        _factoriesMap[key] = diEntry;
+
+    //        return new DIBuilder<T>(diEntry);
+    //    }
+
+    //    private DIBuilder<T> Register<T>((string, Type) key, Func<DiContainer, T> factory)
+    //    {
+    //        if (_factoriesMap.ContainsKey(key))
+    //        {
+    //            throw new Exception("Already has factory entry for type: " + key.Item2.Name);
+    //        }
+
+    //        var diEntry = new DIEntryTransient<T>(this, factory);
+
+    //        _factoriesMap[key] = diEntry;
+
+    //        return new DIBuilder<T>(diEntry);
+    //    }
+
+    //    public void AddChildContainer(IDiContainer container)
+    //    {
+    //        _childContainers.Add(container);
+    //    }
+
+    //    public void Dispose()
+    //    {
+    //        _factoriesMap.Clear();
+    //        _cachedKeysForResolving.Clear();
+    //        _childContainers.Clear();
+    //    }
+    //}
 }

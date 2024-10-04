@@ -21,10 +21,13 @@ namespace WKosArch.Domain.Contexts
             return result;
         }
 
-        protected override IDiContainer CreateLocalContainer(IDiContainer dIContainer = null)
+        protected override DIContainer CreateLocalContainer(DIContainer dIContainer = null)
         {
-            DiContainer rootContainer = new DiContainer();
-            rootContainer.RegisterSingleton(_ => this);
+            DIContainer rootContainer = new DIContainer();
+
+            rootContainer.RegisterFactory(_ => this).AsSingle();
+
+            StaticDI.SetCurrentContainer(rootContainer);
 
             return rootContainer;
         }

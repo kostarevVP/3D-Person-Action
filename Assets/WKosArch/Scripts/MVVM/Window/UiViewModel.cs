@@ -3,22 +3,24 @@ using System.Reactive.Linq;
 using WKosArch.MVVM;
 using WKosArch.UI_Feature;
 using WKosArch.DependencyInjection;
+using UnityEngine;
 
 namespace WKosArch
 {
     public abstract class UiViewModel : IViewModel
     {
         public UILayer TargetLayer { get; set; }
+        public Transform Transform { get; set; }
         public IObservable<bool> Opened { get; }
         public IObservable<bool> Closed { get; }
         public IObservable<bool> Hided { get; }
 
         public bool IsHide { get; private set; }
 
-        public IDiContainer DiContainer => _dIContainer;
+        public DIContainer DiContainer => _dIContainer;
         public IUserInterfaceFeature UI => _userInterface;
 
-        private IDiContainer _dIContainer;
+        private DIContainer _dIContainer;
         private IUserInterfaceFeature _userInterface;
 
         private event Action<bool> _opened;
@@ -33,13 +35,14 @@ namespace WKosArch
             Hided = Observable.FromEvent<bool>(a => _hided += a, a => _hided -= a);
         }
 
-        public void Inject(IDiContainer dIContainer, IUserInterfaceFeature userInterface)
+        public void Inject(DIContainer dIContainer, IUserInterfaceFeature userInterface)
         {
             _dIContainer = dIContainer;
             _userInterface = userInterface;
 
             Injection();
         }
+
 
         public virtual void Injection() { }
         public virtual void Subscribe() { }

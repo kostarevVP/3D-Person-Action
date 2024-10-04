@@ -30,7 +30,7 @@ namespace WKosArch.Domain.Contexts
             }
         }
 
-        public IDiContainer Container => _container ??= CreateLocalContainer();
+        public DIContainer Container => _container ??= CreateLocalContainer();
 
 
         private bool _isReady;
@@ -40,7 +40,7 @@ namespace WKosArch.Domain.Contexts
         private List<IFeature> _cachedFeatures;
         private List<IFeature> _reverseCachedFeatures;
 
-        private IDiContainer _container;
+        private DIContainer _container;
 
         #region Unity Lifecycle
 
@@ -99,7 +99,7 @@ namespace WKosArch.Domain.Contexts
 
         #endregion
 
-        protected abstract IDiContainer CreateLocalContainer(IDiContainer dIContainer = null);
+        protected abstract DIContainer CreateLocalContainer(DIContainer dIContainer = null);
 
         private void InstallFeatures()
         {

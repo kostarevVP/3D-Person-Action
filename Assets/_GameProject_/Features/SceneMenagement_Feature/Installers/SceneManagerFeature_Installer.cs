@@ -11,7 +11,7 @@ namespace WKosArch.SceneManagement_Feature
     {
         [SerializeField] private GameObject _loadingScreenPrefab;
 
-        public override IFeature Create(IDiContainer container)
+        public override IFeature Create(DIContainer container)
         {
             ProjectContext projectContext = container.Resolve<ProjectContext>();
 
@@ -29,9 +29,9 @@ namespace WKosArch.SceneManagement_Feature
 
         public override void Dispose() { }
 
-        private void RegisterFeatureAsSingleton(IDiContainer container, ISceneManagementFeature feature)
+        private void RegisterFeatureAsSingleton(DIContainer container, ISceneManagementFeature feature)
         {
-            container.RegisterSingleton(_ => feature);
+            container.RegisterFactory(_ => feature).AsSingle();
             Log.PrintColor($"[SceneManagementFeature - ISceneManagementFeature] Create and RegisterSingleton", Color.cyan);
         }
 

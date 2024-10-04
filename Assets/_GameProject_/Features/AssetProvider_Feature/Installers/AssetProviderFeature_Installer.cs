@@ -9,7 +9,7 @@ namespace WKosArch.AssetProvider_Feature
     [CreateAssetMenu(fileName = "AssetProviderFeature_Installer", menuName = "Game/Installers/AssetProviderFeature_Installer")]
     public class AssetProviderFeature_Installer : FeatureInstaller
     {
-        public override IFeature Create(IDiContainer container)
+        public override IFeature Create(DIContainer container)
         {
             IAssetProviderFeature _feature = new AssetProviderFeature();
 
@@ -19,9 +19,9 @@ namespace WKosArch.AssetProvider_Feature
 
         public override void Dispose() { }
 
-        private void RegisterFeatureAsSingleton(IDiContainer container, IAssetProviderFeature feature)
+        private void RegisterFeatureAsSingleton(DIContainer container, IAssetProviderFeature feature)
         {
-            container.RegisterSingleton(_ => feature);
+            container.RegisterFactory(_ => feature).AsSingle();
             Log.PrintColor($"[AssetProviderFeature - IAssetProviderFeature] Create and RegisterSingleton", Color.cyan);
         }
     } 

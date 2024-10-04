@@ -13,7 +13,7 @@ namespace WKosArch.GameState_Feature
     public class PlayerPrefsGameStateFeature_Installer : FeatureInstaller
     {
         private IGameStateProviderFeature _gameStateProviderFeature;
-        public override IFeature Create(IDiContainer container)
+        public override IFeature Create(DIContainer container)
         {
             ISceneManagementFeature sceneManagementService = container.Resolve<ISceneManagementFeature>();
             IConfigsFeature configsFeature = container.Resolve<IConfigsFeature>();
@@ -36,9 +36,9 @@ namespace WKosArch.GameState_Feature
             _gameStateProviderFeature.SaveGameSettingsState();
         }
 
-        private void RegisterFeatureAsSingleton(IDiContainer container, IGameStateProviderFeature feature)
+        private void RegisterFeatureAsSingleton(DIContainer container, IGameStateProviderFeature feature)
         {
-            container.RegisterSingleton(_ => feature);
+            container.RegisterFactory(_ => feature).AsSingle();
             Log.PrintColor($"[PlayerPrefsGameStateProvider - IGameStateProviderFeature] Create and RegisterSingleton", Color.cyan);
         }
     } 

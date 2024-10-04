@@ -26,7 +26,7 @@ namespace WKosArch.FModSound_Feature
         private ISoundConfigLoader _soundFeatureConfigLoader;
         private ISoundConfigLoader _fModECSFactorySoundConfigLoader;
 
-        public override IFeature Create(IDiContainer container)
+        public override IFeature Create(DIContainer container)
         {
             _sceneManagementService = container.Resolve<ISceneManagementFeature>();
             _configsFeature = container.Resolve<IConfigsFeature>();
@@ -49,7 +49,6 @@ namespace WKosArch.FModSound_Feature
 
             LoadGlobalSoundConfig();
 
-
             RegisterFeatureAsSingleton(container, feature);
 
             return feature;
@@ -62,15 +61,15 @@ namespace WKosArch.FModSound_Feature
         }
 
 
-        private void RegisterFeatureAsSingleton(IDiContainer container, ISoundFeature<FModSound> feature)
+        private void RegisterFeatureAsSingleton(DIContainer container, ISoundFeature<FModSound> feature)
         {
-            container.RegisterSingleton(_ => feature);
+            container.RegisterFactory(_ => feature).AsSingle();
             Log.PrintColor($"[FModSoundFeature - ISoundFeature<FModSound>] Create and RegisterSingleton", Color.cyan);
         }
 
-        private void RegisterFeatureAsSingleton(IDiContainer container, IFModSoundECSFactory feature)
+        private void RegisterFeatureAsSingleton(DIContainer container, IFModSoundECSFactory feature)
         {
-            container.RegisterSingleton(_ => feature);
+            container.RegisterFactory(_ => feature).AsSingle();
             Log.PrintColor($"[FModSoundECSFactory - IFModECSFactory] Create and RegisterSingleton", Color.cyan);
         }
 

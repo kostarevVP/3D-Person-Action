@@ -1,4 +1,7 @@
 using R3;
+using UnityEngine;
+using WKosArch.DependencyInjection;
+using WKosArch.Extensions;
 using WKosArch.FModSound_Feature;
 using WKosArch.GameState_Feature;
 
@@ -149,6 +152,7 @@ namespace WKosArch.Sound_Feature
         {
             _hapticEnabled.OnNext(isEnabled);
         }
+
 
         private void InitializePreviousVolumeValues()
         {

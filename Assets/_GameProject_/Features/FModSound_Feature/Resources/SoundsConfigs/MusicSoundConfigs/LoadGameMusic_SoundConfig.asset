@@ -19,4 +19,7 @@ MonoBehaviour:
       Data3: 661987496
       Data4: 496157849
     Path: event:/Music/Level 02
-  Parameters: []
+  Parameters:
+  - Parameter:
+      Name: parameter:/Music/Area
+      Value: 0

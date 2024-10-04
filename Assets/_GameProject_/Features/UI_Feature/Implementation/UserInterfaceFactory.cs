@@ -19,12 +19,12 @@ namespace WKosArch.UI_Feature
         private Dictionary<string, UiViewModel> _createdUiViewModelsCache = new();
         private Dictionary<string, View> _createdViewCache = new();
 
-        private IDiContainer _diContainer;
+        private DIContainer _diContainer;
         private IUserInterfaceFeature _ui;
 
         private Dictionary<string, View> _viewModelToViewMap;
 
-        public void Construct(IDiContainer dIContainer, IUserInterfaceFeature ui)
+        public void Construct(DIContainer dIContainer, IUserInterfaceFeature ui)
         {
             _diContainer = dIContainer;
             _ui = ui;
@@ -126,7 +126,9 @@ namespace WKosArch.UI_Feature
 
                 _createdViewCache.Add(fullName, view);
             }
-             
+
+            viewModel.Transform = view.transform;
+
             return view;
         }
 

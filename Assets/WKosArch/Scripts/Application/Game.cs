@@ -21,7 +21,7 @@ namespace WKosArch.Game
 
                 ProjectContext = projectContext;
 
-                DI.AddRootDIContainer(projectContext.Container);
+               
                 
                 if (projectContext != null)
                 {

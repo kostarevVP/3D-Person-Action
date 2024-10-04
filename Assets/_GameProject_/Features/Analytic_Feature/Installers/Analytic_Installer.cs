@@ -9,7 +9,7 @@ namespace WKosArch.Analytics_Feature
     [CreateAssetMenu(fileName = "Analytic_Installer", menuName = "Game/Installers/Analytic_Installer")]
     public class Analytic_Installer : FeatureInstaller
     {
-        public override IFeature Create(IDiContainer container)
+        public override IFeature Create(DIContainer container)
         {
             IAnalyticsFeature feature = new LogAnalyticsFeature();
 
@@ -19,9 +19,9 @@ namespace WKosArch.Analytics_Feature
         }
         public override void Dispose() { }
 
-        private void RegisterFeatureAsSingleton(IDiContainer container, IAnalyticsFeature feature)
+        private void RegisterFeatureAsSingleton(DIContainer container, IAnalyticsFeature feature)
         {
-            container.RegisterSingleton(_ => feature);
+            container.RegisterFactory(_ => feature).AsSingle();
             Log.PrintColor($"[LogAnalyticsFeature - IAnalyticService] Create and RegisterSingleton", Color.cyan);
         }
     }

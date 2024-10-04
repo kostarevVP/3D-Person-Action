@@ -2,18 +2,18 @@
 
 namespace WKosArch.DependencyInjection
 {
-    public static class DI
+    public static class StaticDI
     {
-        private static IDiContainer _rootDiContainer = null;
+        private static DIContainer _currentContainer = null;
 
-        public static void AddRootDIContainer(IDiContainer diContainer)
+        public static void SetCurrentContainer(DIContainer diContainer)
         {
-            _rootDiContainer = diContainer;
+            _currentContainer = diContainer;
         }
 
         public static TResolve Resolve<TResolve>() where TResolve : class
         {
-            return _rootDiContainer.Resolve<TResolve>();
+            return _currentContainer.Resolve<TResolve>();
         }
 
         //need for not Reload Domain each time
@@ -21,7 +21,7 @@ namespace WKosArch.DependencyInjection
         [RuntimeInitializeOnLoadMethod]
         static void Init()
         {
-            _rootDiContainer = null;
+            _currentContainer = null;
         }
     }
 }

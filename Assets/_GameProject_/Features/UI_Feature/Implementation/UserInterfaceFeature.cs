@@ -16,7 +16,7 @@ namespace WKosArch.UI_Feature
         private ViewModelStack<ViewModelTreeNode> _hudStack = new();
 
 
-        public UserInterfaceFeature(IDiContainer container)
+        public UserInterfaceFeature(DIContainer container)
         {
             _uiFactory = UserInterfaceFactory.CreateInstance();
             _uiFactory.Construct(container, this);

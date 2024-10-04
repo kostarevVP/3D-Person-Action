@@ -77,7 +77,7 @@ namespace WKosArch.FModSound_Feature
 
             for (var i = 0; i < parameters.Length; i++)
             {
-                string name = _fModSoundSceneConfigMap[soundType].Parameters[i].Parameter.Name;
+                string name = config.Parameters[i].Parameter.Name;
 
                 RESULT isOk = eventDescription.getParameterDescriptionByName(name, out var parameterDescription);
                 Assert.IsTrue(isOk == RESULT.OK, "getParameterDescriptionByName error: " + result);
@@ -282,8 +282,8 @@ namespace WKosArch.FModSound_Feature
             {
                 return globalSound;
             }
-
-            throw new Exception($"SoundType {soundType} not found in cached scene or global sounds.");
+            
+            return null;
         }
 
         private void RemoveFromCashedList(FModSound sound)

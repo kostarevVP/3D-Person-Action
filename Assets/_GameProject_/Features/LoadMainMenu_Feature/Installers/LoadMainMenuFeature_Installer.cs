@@ -10,7 +10,7 @@ using WKosArch.SceneManagement_Feature;
 [CreateAssetMenu(fileName = "LoadMainMenuFeature_Installer", menuName = "Game/Installers/LoadMainMenuFeature_Installer")]
 public class LoadMainMenuFeature_Installer : FeatureInstaller
 {
-    public override IFeature Create(IDiContainer container)
+    public override IFeature Create(DIContainer container)
     {
         ISceneManagementFeature sceneManagementService = container.Resolve<ISceneManagementFeature>();
         IUserInterfaceFeature ui = container.Resolve<IUserInterfaceFeature>();
@@ -18,6 +18,7 @@ public class LoadMainMenuFeature_Installer : FeatureInstaller
 
 
         ILoadMainMenuFeature feature = new LoadMainMenuFeature(sceneManagementService, ui);
+
 
         saveLoadHandlerService.AddGameStateHolder(feature as ISaveGameState);
         saveLoadHandlerService.InformSaveHolders();
@@ -29,9 +30,9 @@ public class LoadMainMenuFeature_Installer : FeatureInstaller
 
     public override void Dispose() { }
 
-    private void RegisterFeatureAsSingleton(IDiContainer container, ILoadMainMenuFeature feature)
+    private void RegisterFeatureAsSingleton(DIContainer container, ILoadMainMenuFeature feature)
     {
-        container.RegisterSingleton(_ => feature);
+        container.RegisterFactory(_ => feature).AsSingle();
         Log.PrintColor($"[LoadMainMenuFeature_Installer] Create and RegisterSingleton", Color.cyan);
     }
 }

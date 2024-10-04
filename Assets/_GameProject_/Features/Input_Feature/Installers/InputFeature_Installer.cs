@@ -11,7 +11,7 @@ namespace Input_Feature
     public class InputFeature_Installer : FeatureInstaller
     {
 
-        public override IFeature Create(IDiContainer container)
+        public override IFeature Create(DIContainer container)
         {
             IInputFeature feature = new InputFeature();
 
@@ -25,9 +25,9 @@ namespace Input_Feature
 
         public override void Dispose() { }
 
-        private void RegisterFeatureAsSingleton(IDiContainer container, IInputFeature feature)
+        private void RegisterFeatureAsSingleton(DIContainer container, IInputFeature feature)
         {
-            container.RegisterSingleton(_ => feature);
+            container.RegisterFactory(_ => feature).AsSingle();
             Log.PrintColor($"[InputFeature_Installer] Create and RegisterSingleton", Color.cyan);
         }
     } 

@@ -11,7 +11,7 @@ public class StateHandlerFeature_Installer : FeatureInstaller
 {
     private IStateHandlerFeature _feature;
 
-    public override IFeature Create(IDiContainer container)
+    public override IFeature Create(DIContainer container)
     {
         IGameStateProviderFeature gameStateProvider = container.Resolve<IGameStateProviderFeature>();
 
@@ -24,9 +24,9 @@ public class StateHandlerFeature_Installer : FeatureInstaller
 
     public override void Dispose() { }
 
-    private void RegisterFeatureAsSingleton(IDiContainer container, IStateHandlerFeature feature)
+    private void RegisterFeatureAsSingleton(DIContainer container, IStateHandlerFeature feature)
     {
-        container.RegisterSingleton(_ => feature);
+        container.RegisterInstance(feature);
         Log.PrintColor($"[StateHandlerFeature - IStateHandlerFeature] Create and RegisterSingleton", Color.cyan);
     }
 }
