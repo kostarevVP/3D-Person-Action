@@ -30,7 +30,7 @@ namespace WKosArch.Domain.Contexts
             }
         }
 
-        public DIContainer Container => _container ??= CreateLocalContainer();
+        public IDIContainer Container => _container ??= CreateLocalContainer();
 
 
         private bool _isReady;
@@ -40,7 +40,7 @@ namespace WKosArch.Domain.Contexts
         private List<IFeature> _cachedFeatures;
         private List<IFeature> _reverseCachedFeatures;
 
-        private DIContainer _container;
+        private IDIContainer _container;
 
         #region Unity Lifecycle
 
@@ -48,12 +48,6 @@ namespace WKosArch.Domain.Contexts
         {
             _cachedFeatures = new List<IFeature>();
             _reverseCachedFeatures = new List<IFeature>();
-        }
-
-        private void OnDestroy()
-        {
-            Destroy();
-            IsReady = false;
         }
 
         private void OnApplicationFocus(bool hasFocus)
@@ -86,20 +80,24 @@ namespace WKosArch.Domain.Contexts
             await WaitInitializationComplete();
         }
 
-        public void Destroy()
+        public virtual void Dispose()
         {
-            DisposeFeatures();
-
             //there are problems with Destroy and OnDestroy, so it needs to be checked
             //because when game is close this method call twice and if not call from OnDestroy
             //i have a problem with UIFactory its because static field in MonoBehaviour
             if (_container != null)
+            {
                 _container.Dispose();
+                _container = null;
+            }
+
+            DisposeFeatures();
+            IsReady = false;
         }
 
         #endregion
 
-        protected abstract DIContainer CreateLocalContainer(DIContainer dIContainer = null);
+        protected abstract IDIContainer CreateLocalContainer(IDIContainer dIContainer = null);
 
         private void InstallFeatures()
         {
@@ -142,18 +140,19 @@ namespace WKosArch.Domain.Contexts
 
         private void DisposeFeatures()
         {
-            foreach (IFeature feature in _cachedFeatures)
+            foreach (IFeature feature in _reverseCachedFeatures)
             {
                 if (feature is IAsyncFeature asyncFeature)
                     asyncFeature.DisposeAsync();
-                if (feature is IDisposable disposable)
-                    disposable.Dispose();
             }
 
             _cachedFeatures.Clear();
             _reverseCachedFeatures.Clear();
 
-            foreach (var featuresInstaller in _featureInstallers)
+            var featureInstallers = _featureInstallers.ToList();
+            featureInstallers.Reverse();
+
+            foreach (var featuresInstaller in featureInstallers)
             {
                 featuresInstaller.Dispose();
             }

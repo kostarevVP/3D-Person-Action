@@ -12,7 +12,7 @@ namespace WKosArch.Features.LoadLevelFeature
     public class LoadLevelFeature_Installer : FeatureInstaller
     {
         ILoadLevelFeature _loadLevelFeature;
-        public override IFeature Create(DIContainer container) 
+        public override IFeature Create(IDIContainer container) 
         {
             ISceneManagementFeature sceneManagementService = container.Resolve<ISceneManagementFeature>();
             IUserInterfaceFeature ui = container.Resolve<IUserInterfaceFeature>();
@@ -26,9 +26,9 @@ namespace WKosArch.Features.LoadLevelFeature
 
         public override void Dispose() { }
 
-        private void RegisterFeatureAsSingleton(DIContainer container, ILoadLevelFeature feature)
+        private void RegisterFeatureAsSingleton(IDIContainer container, ILoadLevelFeature feature)
         {
-            container.RegisterFactory(_ => feature).AsSingle();
+            container.Bind(feature).AsSingle();
             Log.PrintColor($"[ILoadLevelFeature] Create and RegisterSingleton", Color.cyan);
         }
     }

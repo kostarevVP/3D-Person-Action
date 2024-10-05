@@ -28,7 +28,7 @@ public class StateHandlerFeature : IStateHandlerFeature, IDisposable
         foreach (var holder in _loadHolders)
         {
             if (holder is ISaveGameState saveHolder)
-                saveHolder.SaveProgress(gameState);
+                saveHolder.SaveGameState(gameState);
         }
     }
 
@@ -38,7 +38,7 @@ public class StateHandlerFeature : IStateHandlerFeature, IDisposable
 
         foreach (var holder in _loadHolders)
         {
-            holder.LoadProgress(gameState);
+            holder.LoadGameState(gameState);
         }
     }
 

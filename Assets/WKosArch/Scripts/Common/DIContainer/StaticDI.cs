@@ -4,9 +4,9 @@ namespace WKosArch.DependencyInjection
 {
     public static class StaticDI
     {
-        private static DIContainer _currentContainer = null;
+        private static IDIContainer _currentContainer = null;
 
-        public static void SetCurrentContainer(DIContainer diContainer)
+        public static void SetCurrentContainer(IDIContainer diContainer)
         {
             _currentContainer = diContainer;
         }

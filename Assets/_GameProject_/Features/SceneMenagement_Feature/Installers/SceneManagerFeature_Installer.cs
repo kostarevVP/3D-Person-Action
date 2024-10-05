@@ -1,7 +1,7 @@
-﻿using WKosArch.Domain.Contexts;
+﻿using UnityEngine;
+using WKosArch.Domain.Contexts;
 using WKosArch.Domain.Features;
 using WKosArch.Extensions;
-using UnityEngine;
 using WKosArch.DependencyInjection;
 
 namespace WKosArch.SceneManagement_Feature
@@ -11,7 +11,7 @@ namespace WKosArch.SceneManagement_Feature
     {
         [SerializeField] private GameObject _loadingScreenPrefab;
 
-        public override IFeature Create(DIContainer container)
+        public override IFeature Create(IDIContainer container)
         {
             ProjectContext projectContext = container.Resolve<ProjectContext>();
 
@@ -21,7 +21,7 @@ namespace WKosArch.SceneManagement_Feature
 
             new SceneContextFeature(projectContext, sceneManagementService);
 
-            RegisterFeatureAsSingleton(container, sceneManagementService);
+            BindAsSingle(container, sceneManagementService);
 
             return sceneManagementService;
         }
@@ -29,10 +29,10 @@ namespace WKosArch.SceneManagement_Feature
 
         public override void Dispose() { }
 
-        private void RegisterFeatureAsSingleton(DIContainer container, ISceneManagementFeature feature)
+        private void BindAsSingle(IDIContainer container, ISceneManagementFeature feature)
         {
-            container.RegisterFactory(_ => feature).AsSingle();
-            Log.PrintColor($"[SceneManagementFeature - ISceneManagementFeature] Create and RegisterSingleton", Color.cyan);
+            container.Bind(feature).AsSingle();
+            Log.PrintColor($"[SceneManagementFeature - ISceneManagementFeature] Create and Bind as Single", Color.cyan);
         }
 
         private ILoadingScreen InstantiateLoadingScreen()

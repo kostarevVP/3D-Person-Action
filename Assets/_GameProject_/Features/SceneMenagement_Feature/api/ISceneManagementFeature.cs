@@ -9,6 +9,7 @@ namespace WKosArch.SceneManagement_Feature
         bool SceneReadyToStart { get; set; }
         string CurrentSceneName { get; }
         int CurrentSceneIndex { get; }
+        string PreviousSceneName { get; }
 
         event Action<string> OnSceneLoadingStarted;
         event Action<string> OnSceneChanged;

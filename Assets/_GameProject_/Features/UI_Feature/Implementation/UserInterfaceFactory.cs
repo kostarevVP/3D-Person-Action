@@ -19,12 +19,12 @@ namespace WKosArch.UI_Feature
         private Dictionary<string, UiViewModel> _createdUiViewModelsCache = new();
         private Dictionary<string, View> _createdViewCache = new();
 
-        private DIContainer _diContainer;
+        private IDIContainer _diContainer;
         private IUserInterfaceFeature _ui;
 
         private Dictionary<string, View> _viewModelToViewMap;
 
-        public void Construct(DIContainer dIContainer, IUserInterfaceFeature ui)
+        public void Construct(IDIContainer dIContainer, IUserInterfaceFeature ui)
         {
             _diContainer = dIContainer;
             _ui = ui;

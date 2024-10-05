@@ -14,11 +14,12 @@ namespace WKosArch.SceneManagement_Feature
             _sceneManagementService = sceneManagementService;
 
             _sceneManagementService.OnSceneChanged += LoadSceneContext;
+            _sceneManagementService.OnSceneUnloaded += DestroyContext;
         }
 
         private async void LoadSceneContext(string sceneName)
         {
-            DestroyContext(_sceneManagementService.CurrentSceneName);
+            //DestroyContext(_sceneManagementService.CurrentSceneName);
             await LoadContext(sceneName);
         }
     
@@ -45,7 +46,7 @@ namespace WKosArch.SceneManagement_Feature
 
             if (sceneContext != null)
             {
-                sceneContext.Destroy();
+                sceneContext.Dispose();
             }
         }
     }

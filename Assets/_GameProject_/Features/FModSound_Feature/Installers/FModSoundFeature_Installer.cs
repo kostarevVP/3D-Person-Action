@@ -26,7 +26,7 @@ namespace WKosArch.FModSound_Feature
         private ISoundConfigLoader _soundFeatureConfigLoader;
         private ISoundConfigLoader _fModECSFactorySoundConfigLoader;
 
-        public override IFeature Create(DIContainer container)
+        public override IFeature Create(IDIContainer container)
         {
             _sceneManagementService = container.Resolve<ISceneManagementFeature>();
             _configsFeature = container.Resolve<IConfigsFeature>();
@@ -43,13 +43,13 @@ namespace WKosArch.FModSound_Feature
             {
                 IFModSoundECSFactory fModECSFactory = new FModSoundECSFactory();
                 _fModECSFactorySoundConfigLoader = fModECSFactory as ISoundConfigLoader;
-                RegisterFeatureAsSingleton(container, fModECSFactory);
+                BindAsSingle(container, fModECSFactory);
             }
 
 
             LoadGlobalSoundConfig();
 
-            RegisterFeatureAsSingleton(container, feature);
+            BindAsSingle(container, feature);
 
             return feature;
         }
@@ -61,16 +61,16 @@ namespace WKosArch.FModSound_Feature
         }
 
 
-        private void RegisterFeatureAsSingleton(DIContainer container, ISoundFeature<FModSound> feature)
+        private void BindAsSingle(IDIContainer container, ISoundFeature<FModSound> feature)
         {
-            container.RegisterFactory(_ => feature).AsSingle();
-            Log.PrintColor($"[FModSoundFeature - ISoundFeature<FModSound>] Create and RegisterSingleton", Color.cyan);
+            container.Bind(feature).AsSingle();
+            Log.PrintColor($"[FModSoundFeature - ISoundFeature<FModSound>] Create and Bind as Single", Color.cyan);
         }
 
-        private void RegisterFeatureAsSingleton(DIContainer container, IFModSoundECSFactory feature)
+        private void BindAsSingle(IDIContainer container, IFModSoundECSFactory feature)
         {
-            container.RegisterFactory(_ => feature).AsSingle();
-            Log.PrintColor($"[FModSoundECSFactory - IFModECSFactory] Create and RegisterSingleton", Color.cyan);
+            container.Bind(feature).AsSingle();
+            Log.PrintColor($"[FModSoundECSFactory - IFModECSFactory] Create and Bind as Single", Color.cyan);
         }
 
         private void LoadGlobalSoundConfig()

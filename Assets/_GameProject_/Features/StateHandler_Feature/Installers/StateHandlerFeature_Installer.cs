@@ -11,22 +11,22 @@ public class StateHandlerFeature_Installer : FeatureInstaller
 {
     private IStateHandlerFeature _feature;
 
-    public override IFeature Create(DIContainer container)
+    public override IFeature Create(IDIContainer container)
     {
         IGameStateProviderFeature gameStateProvider = container.Resolve<IGameStateProviderFeature>();
 
         _feature = new StateHandlerFeature(gameStateProvider);
 
-        RegisterFeatureAsSingleton(container, _feature);
+        BindAsSingle(container, _feature);
 
         return _feature;
     }
 
     public override void Dispose() { }
 
-    private void RegisterFeatureAsSingleton(DIContainer container, IStateHandlerFeature feature)
+    private void BindAsSingle(IDIContainer container, IStateHandlerFeature feature)
     {
-        container.RegisterInstance(feature);
-        Log.PrintColor($"[StateHandlerFeature - IStateHandlerFeature] Create and RegisterSingleton", Color.cyan);
+        container.Bind(feature).AsSingle();
+        Log.PrintColor($"[StateHandlerFeature - IStateHandlerFeature] Create and Bind as Single", Color.cyan);
     }
 }

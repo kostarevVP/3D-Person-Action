@@ -4,6 +4,7 @@ using WKosArch.DependencyInjection;
 using WKosArch.Extensions;
 using WKosArch.FModSound_Feature;
 using WKosArch.GameState_Feature;
+using WKosArch.SceneManagement_Feature;
 
 namespace WKosArch.Sound_Feature
 {
@@ -151,6 +152,7 @@ namespace WKosArch.Sound_Feature
         public void SwitchHaptic(bool isEnabled)
         {
             _hapticEnabled.OnNext(isEnabled);
+            StaticDI.Resolve<ISceneManagementFeature>().LoadScene(2);
         }
 
 

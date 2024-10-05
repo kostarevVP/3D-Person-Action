@@ -10,6 +10,6 @@ namespace WKosArch.Domain.Contexts
         Action<Context> OnContextDestroy { get; set; }
 
         UniTask InitializeAsync();
-		void Destroy();
+		void Dispose();
 	}
 }

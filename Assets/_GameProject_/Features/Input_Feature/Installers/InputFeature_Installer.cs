@@ -10,25 +10,24 @@ namespace Input_Feature
     [CreateAssetMenu(fileName = " InputFeature_Installer", menuName = "Game/Installers/InputFeature_Installer")]
     public class InputFeature_Installer : FeatureInstaller
     {
-
-        public override IFeature Create(DIContainer container)
+        public override IFeature Create(IDIContainer container)
         {
             IInputFeature feature = new InputFeature();
 
             var inputHandler = InputHandler.CreateInstance();
             inputHandler.Inject(feature);
 
-            RegisterFeatureAsSingleton(container, feature);
+            BindAsSingle(container, feature);
 
             return feature;
         }
 
         public override void Dispose() { }
 
-        private void RegisterFeatureAsSingleton(DIContainer container, IInputFeature feature)
+        private void BindAsSingle(IDIContainer container, IInputFeature feature)
         {
-            container.RegisterFactory(_ => feature).AsSingle();
-            Log.PrintColor($"[InputFeature_Installer] Create and RegisterSingleton", Color.cyan);
+            container.Bind(feature).AsSingle();
+            Log.PrintColor($"[InputFeature_Installer] Create and Bind as Single", Color.cyan);
         }
     } 
 }

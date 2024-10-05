@@ -2,7 +2,7 @@
 using WKosArch.Domain.Contexts;
 using UnityEngine;
 
-namespace WKosArch.Game
+namespace WKosArch.GameProject
 {
     [RequireComponent(typeof(ProjectContext))]
     public class Bootstrap : MonoBehaviour
@@ -11,7 +11,7 @@ namespace WKosArch.Game
 
         private void Start()
         {
-            Game.StartGameAsync(_projectContext).RunAsync();
+            GameProject.StartGameAsync(_projectContext).RunAsync();
         }
 
 #if UNITY_EDITOR

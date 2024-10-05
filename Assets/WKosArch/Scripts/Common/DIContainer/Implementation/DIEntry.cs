@@ -2,53 +2,41 @@
 
 namespace WKosArch.DependencyInjection
 {
-    public abstract class DIEntry : IDisposable
+    public abstract class DIEntry : IDIEntry
     {
-        protected DIContainer Container { get; }
-        protected bool IsSingleton { get; set; }
+        protected IDIContainer Container { get; }
+        public bool IsSingleton { get; set; }
 
         protected DIEntry() { }
-        
-        protected DIEntry(DIContainer container)
+
+        protected DIEntry(IDIContainer container)
         {
             Container = container;
         }
 
-        public T Resolve<T>()
-        {
-            return ((DIEntry<T>)this).Resolve();
-        }
-
-        public DIEntry AsSingle()
-        {
-            IsSingleton = true;
-
-            return this;
-        }
-
         public abstract void Dispose();
     }
-    
-    public class DIEntry<T> : DIEntry
+
+    public class DIEntry<T> : DIEntry, IDIEntry<T>
     {
-        private Func<DIContainer, T> Factory { get; }
+        private readonly Func<IDIContainer, T> _factory;
         private T _instance;
         private IDisposable _disposableInstance;
-        
-        public DIEntry(DIContainer container, Func<DIContainer, T> factory) : base(container)
+
+        public DIEntry(IDIContainer container, Func<IDIContainer, T> factory) : base(container)
         {
-            Factory = factory;
+            _factory = factory;
         }
 
-        public DIEntry(T value)
+        public DIEntry(T instance)
         {
-            _instance = value;
+            _instance = instance;
 
             if (_instance is IDisposable disposableInstance)
             {
                 _disposableInstance = disposableInstance;
             }
-            
+
             IsSingleton = true;
         }
 
@@ -58,8 +46,8 @@ namespace WKosArch.DependencyInjection
             {
                 if (_instance == null)
                 {
-                    _instance = Factory(Container);
-                    
+                    _instance = _factory(Container);
+
                     if (_instance is IDisposable disposableInstance)
                     {
                         _disposableInstance = disposableInstance;
@@ -69,12 +57,15 @@ namespace WKosArch.DependencyInjection
                 return _instance;
             }
 
-            return Factory(Container);
+            return _factory(Container);
         }
 
         public override void Dispose()
         {
-            _disposableInstance?.Dispose();
+            if (_disposableInstance != null)
+            {
+                _disposableInstance.Dispose();
+            }
         }
     }
 }

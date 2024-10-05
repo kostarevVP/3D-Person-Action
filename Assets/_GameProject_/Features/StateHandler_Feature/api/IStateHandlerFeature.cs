@@ -10,10 +10,10 @@ public interface IStateHandlerFeature : IFocusPauseFeature
 
 public interface ISaveGameState : ILoadGameState
 {
-    public void SaveProgress(GameStateProxy gameState);
+    public void SaveGameState(GameStateProxy gameState);
 }
 
 public interface ILoadGameState
 {
-    public void LoadProgress(GameStateProxy gameState);
+    public void LoadGameState(GameStateProxy gameState);
 }

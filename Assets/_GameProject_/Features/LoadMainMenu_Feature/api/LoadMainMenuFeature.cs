@@ -10,7 +10,6 @@ public class LoadMainMenuFeature : ILoadMainMenuFeature, ISaveGameState
     private readonly IUserInterfaceFeature _ui;
 
 
-
     public LoadMainMenuFeature(ISceneManagementFeature sceneManagementService, IUserInterfaceFeature ui)
     {
         _sceneManagementService = sceneManagementService;
@@ -68,12 +67,12 @@ public class LoadMainMenuFeature : ILoadMainMenuFeature, ISaveGameState
         _ui.Show<AudioSettingViewModel>();
     }
 
-    public void SaveProgress(GameStateProxy progress)
+    public void SaveGameState(GameStateProxy progress)
     {
 
     }
 
-    public void LoadProgress(GameStateProxy progress)
+    public void LoadGameState(GameStateProxy progress)
     {
         
     }

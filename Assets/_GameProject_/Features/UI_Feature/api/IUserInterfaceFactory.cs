@@ -9,7 +9,7 @@ namespace WKosArch.UI_Feature
     public interface IUserInterfaceFactory : IDisposable
     {
         void BuildUiForScene(Dictionary<string, View> viewModelToViewMap);
-        void Construct(DIContainer dIContainer, IUserInterfaceFeature userInterface);
+        void Construct(IDIContainer dIContainer, IUserInterfaceFeature userInterface);
 
         View GetOrCreateActiveView(UiViewModel viewModel, bool openForced = false, Transform root = null);
         UiViewModel GetOrCreateViewModel<TUiViewModel>() where TUiViewModel : UiViewModel, new();

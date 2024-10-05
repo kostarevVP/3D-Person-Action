@@ -3,6 +3,7 @@ using System;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using WKosArch.Domain.Contexts;
+using WKosArch.Extensions;
 
 namespace WKosArch.SceneManagement_Feature
 {
@@ -18,10 +19,12 @@ namespace WKosArch.SceneManagement_Feature
         public event Action<string> OnSceneReloadBegin;
         public bool SceneReadyToStart { get; set; }
         public string CurrentSceneName => _currentSceneName;
+        public string PreviousSceneName => _previousSceneName;
         public int CurrentSceneIndex => _currentSceneIndex;
 
         private int _currentSceneIndex;
         private string _currentSceneName;
+        private string _previousSceneName;
 
         private ILoadingScreen _loadingScreen;
 
@@ -37,6 +40,7 @@ namespace WKosArch.SceneManagement_Feature
             SceneManager.sceneUnloaded += scene =>
             {
                 OnSceneUnloaded?.Invoke(scene.name);
+                _previousSceneName = scene.name;
             };
         }
 
@@ -60,9 +64,6 @@ namespace WKosArch.SceneManagement_Feature
             string sceneName = GetSceneNameFromIndex(sceneIndex);
 
             LoadScene(sceneName);
-
-            _currentSceneIndex = sceneIndex;
-            _currentSceneName = sceneName;
         }
 
         private string GetSceneNameFromIndex(int sceneIndex)
@@ -123,6 +124,10 @@ namespace WKosArch.SceneManagement_Feature
             }
 
             OnSceneStarted?.Invoke(sceneName);
+
+            _currentSceneIndex = GetBuildIndexFromSceneName(sceneName);
+            _currentSceneName = sceneName;
+
         }
 
         private static async UniTask ShowAnimation(Action<Action> method)

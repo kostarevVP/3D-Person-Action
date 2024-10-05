@@ -5,6 +5,6 @@ namespace WKosArch.Domain.Contexts
 {
     public interface IFeatureInstaller
     {
-        IFeature Create(DIContainer localContainer);
+        IFeature Create(IDIContainer localContainer);
     }
 }

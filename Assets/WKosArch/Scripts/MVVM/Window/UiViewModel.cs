@@ -17,10 +17,10 @@ namespace WKosArch
 
         public bool IsHide { get; private set; }
 
-        public DIContainer DiContainer => _dIContainer;
-        public IUserInterfaceFeature UI => _userInterface;
+        public IDIContainer DiContainer { get; private set; }
+        public IUserInterfaceFeature UI { get; private set; }
 
-        private DIContainer _dIContainer;
+        private IDIContainer _dIContainer;
         private IUserInterfaceFeature _userInterface;
 
         private event Action<bool> _opened;
@@ -35,10 +35,10 @@ namespace WKosArch
             Hided = Observable.FromEvent<bool>(a => _hided += a, a => _hided -= a);
         }
 
-        public void Inject(DIContainer dIContainer, IUserInterfaceFeature userInterface)
+        public void Inject(IDIContainer dIContainer, IUserInterfaceFeature userInterface)
         {
-            _dIContainer = dIContainer;
-            _userInterface = userInterface;
+            DiContainer = dIContainer;
+            UI = userInterface;
 
             Injection();
         }

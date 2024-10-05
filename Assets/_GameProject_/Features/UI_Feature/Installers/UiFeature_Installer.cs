@@ -17,7 +17,7 @@ namespace WKosArch.UI_Feature
         ISceneManagementFeature _sceneManagementFeature;
         IConfigsFeature _configsFeature;
 
-        public override IFeature Create(DIContainer container)
+        public override IFeature Create(IDIContainer container)
         {
             _sceneManagementFeature = container.Resolve<ISceneManagementFeature>();
             _configsFeature = container.Resolve<IConfigsFeature>();
@@ -40,9 +40,9 @@ namespace WKosArch.UI_Feature
         private void Unsubscribe() =>
             _sceneManagementFeature.OnSceneLoaded -= SceneLoaded;
 
-        private void RegisterFeatureAsSingleton(DIContainer container, IUserInterfaceFeature feature)
+        private void RegisterFeatureAsSingleton(IDIContainer container, IUserInterfaceFeature feature)
         {
-            container.RegisterFactory(_ => feature).AsSingle();
+            container.Bind<IUserInterfaceFeature>().FromInstance(feature).AsSingle();
             Log.PrintColor($"[UserInterfaceFeature - IUserInterfaceFeature] Create and RegisterSingleton", Color.cyan);
         }
 

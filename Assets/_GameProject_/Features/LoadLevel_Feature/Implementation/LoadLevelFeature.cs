@@ -1,10 +1,11 @@
+using System;
 using WKosArch.Extensions;
 using WKosArch.SceneManagement_Feature;
 using WKosArch.UI_Feature;
 
 namespace WKosArch.Features.LoadLevelFeature
 {
-    public class LoadLevelFeature : ILoadLevelFeature
+    public class LoadLevelFeature : ILoadLevelFeature, IDisposable
     {
         private readonly ISceneManagementFeature _sceneManagementService;
         private readonly IUserInterfaceFeature _ui;

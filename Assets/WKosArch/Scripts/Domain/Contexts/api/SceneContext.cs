@@ -22,9 +22,9 @@ namespace WKosArch.Domain.Contexts
 #endif
         }
 
-        protected override DIContainer CreateLocalContainer(DIContainer dIContainer = null)
+        protected override IDIContainer CreateLocalContainer(IDIContainer dIContainer = null)
         {
-            DIContainer rootContainer = Game.Game.ProjectContext.Container;
+            IDIContainer rootContainer = GameProject.GameProject.ProjectContext.Container;
 
             var sceneContainer = new DIContainer(rootContainer);
 

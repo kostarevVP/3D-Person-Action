@@ -3,9 +3,9 @@ using Cysharp.Threading.Tasks;
 using WKosArch.Domain.Contexts;
 using WKosArch.DependencyInjection;
 
-namespace WKosArch.Game
+namespace WKosArch.GameProject
 {
-    public static class Game
+    public static class GameProject
     {
         public static ProjectContext ProjectContext { get; set; }
 

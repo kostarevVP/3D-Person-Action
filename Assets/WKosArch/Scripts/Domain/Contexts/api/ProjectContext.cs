@@ -1,6 +1,7 @@
-﻿using WKosArch.DependencyInjection;
-using System.Linq;
+﻿using System.Linq;
 using UnityEngine;
+using WKosArch.DependencyInjection;
+using WKosArch.SceneManagement_Feature;
 
 namespace WKosArch.Domain.Contexts
 {
@@ -8,6 +9,9 @@ namespace WKosArch.Domain.Contexts
     {
         [Space]
         [SerializeField] private SceneContext[] _sceneContexts;
+
+        private IDIContainer _rootContainer;
+        private ISceneManagementFeature _sceneManagementFeature => _rootContainer.Resolve<ISceneManagementFeature>();
 
         private void Start()
         {
@@ -17,19 +21,25 @@ namespace WKosArch.Domain.Contexts
         public SceneContext GetSceneContext(string sceneName)
         {
             var result = _sceneContexts.FirstOrDefault(c => c.SceneName == sceneName);
-            
+
             return result;
         }
 
-        protected override DIContainer CreateLocalContainer(DIContainer dIContainer = null)
+        protected override IDIContainer CreateLocalContainer(IDIContainer dIContainer = null)
         {
-            DIContainer rootContainer = new DIContainer();
+            _rootContainer = new DIContainer();
 
-            rootContainer.RegisterFactory(_ => this).AsSingle();
+            StaticDI.SetCurrentContainer(_rootContainer);
 
-            StaticDI.SetCurrentContainer(rootContainer);
+            _rootContainer.Bind(this).AsSingle();
 
-            return rootContainer;
+            return _rootContainer;
+        }
+
+        private void OnDestroy()
+        {
+            GetSceneContext(_sceneManagementFeature.CurrentSceneName).Dispose();
+            this.Dispose();
         }
     }
 }

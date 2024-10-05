@@ -13,13 +13,13 @@ namespace WKosArch.Quality_Feature
     {
         [SerializeField] private int _targetFPS = 60;
 
-        public override IFeature Create(DIContainer container)
+        public override IFeature Create(IDIContainer container)
         {
             var _configsFeature = container.Resolve<IConfigsFeature>();
 
             IQualityFeature qualityFeature = new QualityFeature(_configsFeature.RenderQualityConfigMap);
 
-            RegisterFeatureAsSingleton(container, qualityFeature);
+            BindAsSingle(container, qualityFeature);
 
             qualityFeature.SetFPSLimit(_targetFPS);
 
@@ -28,10 +28,10 @@ namespace WKosArch.Quality_Feature
 
         public override void Dispose() { }
 
-        private void RegisterFeatureAsSingleton(DIContainer container, IQualityFeature feature)
+        private void BindAsSingle(IDIContainer container, IQualityFeature feature)
         {
-            container.RegisterFactory(_ => feature).AsSingle();
-            Log.PrintColor($"[QualityFeature - IQualityFeature] Create and RegisterSingleton", Color.cyan);
+            container.Bind(feature).AsSingle();
+            Log.PrintColor($"[QualityFeature - IQualityFeature] Create and Bind as Single", Color.cyan);
         }
     } 
 }
