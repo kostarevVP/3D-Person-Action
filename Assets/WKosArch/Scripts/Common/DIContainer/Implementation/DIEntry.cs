@@ -62,10 +62,7 @@ namespace WKosArch.DependencyInjection
 
         public override void Dispose()
         {
-            if (_disposableInstance != null)
-            {
-                _disposableInstance.Dispose();
-            }
+            _disposableInstance?.Dispose();
         }
     }
 }

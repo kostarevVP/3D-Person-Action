@@ -85,11 +85,7 @@ namespace WKosArch.Domain.Contexts
             //there are problems with Destroy and OnDestroy, so it needs to be checked
             //because when game is close this method call twice and if not call from OnDestroy
             //i have a problem with UIFactory its because static field in MonoBehaviour
-            if (_container != null)
-            {
-                _container.Dispose();
-                _container = null;
-            }
+            _container?.Dispose();
 
             DisposeFeatures();
             IsReady = false;
@@ -151,7 +147,6 @@ namespace WKosArch.Domain.Contexts
 
             var featureInstallers = _featureInstallers.ToList();
             featureInstallers.Reverse();
-
             foreach (var featuresInstaller in featureInstallers)
             {
                 featuresInstaller.Dispose();

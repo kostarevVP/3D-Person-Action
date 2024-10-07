@@ -3,7 +3,7 @@ using WKosArch.Domain.Features;
 
 namespace WKosArch.Features.LoadLevelFeature
 {
-    public interface ILoadLevelFeature : IFeature, IDisposable
+    public interface ILoadPrototypeLevelFeature : IFeature, IDisposable
     {
     } 
 }

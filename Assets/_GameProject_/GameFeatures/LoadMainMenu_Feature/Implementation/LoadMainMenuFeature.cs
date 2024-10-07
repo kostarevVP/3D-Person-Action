@@ -1,6 +1,5 @@
 ﻿using WKosArch.Extensions;
 using WKosArch.UI_Feature;
-using WKosArch.Sound_Feature;
 using WKosArch.SceneManagement_Feature;
 using WKosArch.GameState_Feature;
 
@@ -64,7 +63,7 @@ public class LoadMainMenuFeature : ILoadMainMenuFeature, ISaveGameState
 
     private void ShowUI()
     {
-        _ui.Show<AudioSettingViewModel>();
+
     }
 
     public void SaveGameState(GameStateProxy progress)
